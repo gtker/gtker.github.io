@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>TeX on GTKer.com</title>
-    <link>gtker.github.io/tags/tex/</link>
+    <link>/tags/tex/</link>
     <description>Recent content in TeX on GTKer.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 29 Nov 2020 00:09:00 +0100</lastBuildDate>
     
-	<atom:link href="gtker.github.io/tags/tex/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/tex/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Improved way of rendering TeX math in Hugo</title>
-      <link>gtker.github.io/post/2020/11/29/improved-way-of-rendering-tex-math-in-hugo/</link>
+      <link>/post/2020/11/29/improved-way-of-rendering-tex-math-in-hugo/</link>
       <pubDate>Sun, 29 Nov 2020 00:09:00 +0100</pubDate>
       
-      <guid>gtker.github.io/post/2020/11/29/improved-way-of-rendering-tex-math-in-hugo/</guid>
+      <guid>/post/2020/11/29/improved-way-of-rendering-tex-math-in-hugo/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://latkin.org/blog/about/&#34;&gt;Lincoln Atkinson&lt;/a&gt; wrote a post about &lt;a href=&#34;https://latkin.org/blog/2016/08/07/better-tex-math-typesetting-in-hugo/&#34;&gt;TeX math typesetting in Hugo&lt;/a&gt; (&lt;a href=&#34;https://web.archive.org/web/20201108141222/https://latkin.org/blog/2016/08/07/better-tex-math-typesetting-in-hugo/&#34;&gt;archive&lt;/a&gt;) where he described a solution that could do TeX math typesetting with and without Javascript enabled.&lt;/p&gt;
 &lt;p&gt;I have improved slightly upon his method, creating a simple Python script to download the equation images prior to publication and serving them from the local web server.&lt;/p&gt;</description>
     </item>
