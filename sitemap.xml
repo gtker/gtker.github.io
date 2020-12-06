@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>/tags/equations/</loc>
+    <lastmod>2020-11-29T00:09:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2020-11-29T00:09:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/hugo/</loc>
+    <lastmod>2020-11-29T00:09:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/2020/11/29/improved-way-of-rendering-tex-math-in-hugo/</loc>
+    <lastmod>2020-11-29T00:09:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/katex/</loc>
+    <lastmod>2020-11-29T00:09:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2020-11-29T00:09:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/python/</loc>
+    <lastmod>2020-11-29T00:09:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2020-11-29T00:09:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/tex/</loc>
+    <lastmod>2020-11-29T00:09:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/about/</loc>
+  </url>
+  
+</urlset>
