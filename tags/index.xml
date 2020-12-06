@@ -2,57 +2,57 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on GTKer.com</title>
-    <link>/tags/</link>
+    <link>gtker.github.io/tags/</link>
     <description>Recent content in Tags on GTKer.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 29 Nov 2020 00:09:00 +0100</lastBuildDate>
     
-	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="gtker.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Equations</title>
-      <link>/tags/equations/</link>
+      <link>gtker.github.io/tags/equations/</link>
       <pubDate>Sun, 29 Nov 2020 00:09:00 +0100</pubDate>
       
-      <guid>/tags/equations/</guid>
+      <guid>gtker.github.io/tags/equations/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Hugo</title>
-      <link>/tags/hugo/</link>
+      <link>gtker.github.io/tags/hugo/</link>
       <pubDate>Sun, 29 Nov 2020 00:09:00 +0100</pubDate>
       
-      <guid>/tags/hugo/</guid>
+      <guid>gtker.github.io/tags/hugo/</guid>
       <description></description>
     </item>
     
     <item>
       <title>KaTex</title>
-      <link>/tags/katex/</link>
+      <link>gtker.github.io/tags/katex/</link>
       <pubDate>Sun, 29 Nov 2020 00:09:00 +0100</pubDate>
       
-      <guid>/tags/katex/</guid>
+      <guid>gtker.github.io/tags/katex/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Python</title>
-      <link>/tags/python/</link>
+      <link>gtker.github.io/tags/python/</link>
       <pubDate>Sun, 29 Nov 2020 00:09:00 +0100</pubDate>
       
-      <guid>/tags/python/</guid>
+      <guid>gtker.github.io/tags/python/</guid>
       <description></description>
     </item>
     
     <item>
       <title>TeX</title>
-      <link>/tags/tex/</link>
+      <link>gtker.github.io/tags/tex/</link>
       <pubDate>Sun, 29 Nov 2020 00:09:00 +0100</pubDate>
       
-      <guid>/tags/tex/</guid>
+      <guid>gtker.github.io/tags/tex/</guid>
       <description></description>
     </item>
     
