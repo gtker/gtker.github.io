@@ -1,0 +1,104 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Running assembly on the BL602 RISC-V microcontroller and directly controlling GPIO | GTKer.com</title><style>body{font-family:Optima,Candara,Calibri,Arial,sans-serif}code{font-family:lucida console,Monaco,monospace;font-size:85%}</style><link rel=stylesheet href=/sass/style.min.css><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest></head><body><nav><ul class=menu><li><a href=/>Home</a></li><li><a href=/about/>About</a></li><li><a href=/tags/>Tags</a></li><li><a href=/index.xml>Atom/RSS</a></li></ul><hr></nav><div class=article-meta><h1><span class=title>Running assembly on the BL602 RISC-V microcontroller and directly controlling GPIO</span></h1><h2 class=date>2021-01-14</h2></div><p class=terms>Tags: <a href=/tags/risc-v>RISC-V</a> <a href=/tags/bl602>BL602</a> <a href=/tags/assembly>Assembly</a> <a href=/tags/c>C</a></p><nav id=TableOfContents><ul><li><a href=#git-repository>Git repository</a></li><li><a href=#background>Background</a></li><li><a href=#gpio-on-the-bl602>GPIO on the BL602</a></li><li><a href=#exact-plan-for-gpio11>Exact plan for <code>GPIO11</code></a></li><li><a href=#c-and-assembly-examples>C and assembly examples</a></li><li><a href=#building-linking-and-flashing>Building, linking and flashing</a></li></ul></nav><main><p>The Boufallo Lab BL602 is a 32 bit RISC-V microcontroller with support for 2.4 GHz WiFi and Bluetooth Low Energy 5.0.
+It has an <a href=https://github.com/bouffalolab/bl_iot_sdk>official SDK</a>, however even the “Hello World example” includes a large amount of boilerplate.
+This article will show how to manipulate the GPIO pins using assembly and no dependencies.</p><h2 id=git-repository>Git repository</h2><p>The full assembly and a makefile can be found in this <a href=https://github.com/gtker/bl602-assembly>this</a> repository.</p><h2 id=background>Background</h2><p>As seen on the <a href=https://github.com/pine64/bl602-docs/blob/4c72881b6b4e1aa2ff5cdc5991de46e07fe39160/mirrored/Pine64%20BL602%20EVB%20Schematic%20ver%201.1.pdf>Pine64 BL602 EVB ver 1.1 schematics</a> <code>LED1</code> is three separate diodes controlled through <code>GPIO17</code> (Red), <code>GPIO14</code> (Green) and <code>GPIO11</code> (Blue).
+<code>LED1</code> is not to be confused with <code>LED2</code> which just lights up red when the board is plugged in.</p><p><a href=https://github.com/pine64/bl602-docs/tree/42b5581e37b8c21ed6320c43392c6c93e0803ab3>Page 18 of the BL602 reference manual</a> shows that the XIP (eXecute In Place) memory starts at address <code>0x23000000</code>.
+<code>blflash</code> <a href=https://github.com/spacemeowx2/blflash/releases/tag/v0.3.0>version 0.3.0</a> writes binary files to address <code>0x23000000</code> by default so no linker scripts are necessary.</p><h2 id=gpio-on-the-bl602>GPIO on the BL602</h2><p>GPIO on the BL602 can be controlled through several pre defined registers.
+<a href=https://github.com/pine64/bl602-docs/tree/42b5581e37b8c21ed6320c43392c6c93e0803ab3>Page 24 to 29 of the BL602 reference manual</a> describes the general approach.</p><p>In order to initialize and control the GPIO pins the following must be done:</p><ol><li>The GPIO pin function and resistor type must be set. The exact register depends on the GPIO pin.</li><li>The relevant bit in the GPIO Output Enable register (<code>GPIO_CFGCTL34_OFFSET</code>) must be set.</li><li>The relevant bit in the GPIO Output register (<code>GPIO_CFGCTL32_OFFSET</code>) must be set.</li></ol><p>The locations are described in the <a href=https://github.com/pine64/bl602-docs/tree/42b5581e37b8c21ed6320c43392c6c93e0803ab3/hardware_notes/registers/glb>unofficial hardware notes</a>.</p><h2 id=exact-plan-for-gpio11>Exact plan for <code>GPIO11</code></h2><p>The Global Register (GLB) is located at address <code>0x40000000</code>.</p><p><a href=https://github.com/pine64/bl602-docs/tree/42b5581e37b8c21ed6320c43392c6c93e0803ab3>Page 28 and 29 of the BL602 reference manual</a> list <code>GPIO_CFGCTL5</code> as the register for configuring <code>GPIO10</code> and <code>GPIO11</code>.
+The register overview on page 36 describes the 16 most significant bits as being used for <code>GPIO11</code> and the 16 least significant bits as being used for <code>GPIO10</code>.
+The two parts of the register have the same layout, <code>GPIO11</code> is just bitshifted left 16:</p><table><thead><tr><th>15</th><th>14</th><th>13</th><th>12</th><th>11</th><th>10</th><th>9</th><th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr></thead><tbody><tr><td></td><td></td><td></td><td></td><td>F</td><td>F</td><td>F</td><td>F</td><td></td><td></td><td>PD</td><td>PU</td><td>DRV</td><td>DRV</td><td>SMT</td><td>IE</td></tr><tr><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr></tbody></table><p>Where reserved bits are blank and following symbols are used:</p><table><thead><tr><th>Symbol</th><th>Meaning</th></tr></thead><tbody><tr><td>F</td><td>Function select</td></tr><tr><td>PD</td><td>Pull-Down Resistor</td></tr><tr><td>PU</td><td>Pull-Up Resistor</td></tr><tr><td>DRV</td><td>Driving control</td></tr><tr><td>SMT</td><td>Schmitt trigger</td></tr><tr><td>IE</td><td>Input enabled</td></tr></tbody></table><p>The function select should be set to 11 (0b1011) in order to choose Software GPIO, and the pull up resistor should be enabled.
+This means we will have to write the value <code>0b0000101100100000 &lt;&lt; 16</code> to the <code>GPIO_CFGCTL5</code> register at address <code>0x40000144</code>.
+The LEDs require sinking current into the GPIO pins, so it should be off until you explicitly pull it <code>LOW</code>.
+If the pulldown resistor was enabled the LED would be on by default.</p><p>Next, the 11th bit of the Output Enable register (<code>GPIO_CFGCTL34_OFFSET</code>) at address <code>0x40000190</code> must be set.
+Bit shifting <code>1 &lt;&lt; 11</code> will work.</p><p>Finally the 11th bit of the Output register (<code>GPIO_CFGCTL32_OFFSET</code>) at address <code>0x40000188</code> must be set <code>LOW</code>.</p><h2 id=c-and-assembly-examples>C and assembly examples</h2><p>The C code is provided for reference only and has not been tested.
+In C we would do:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-C data-lang=C><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#66d9ef>int</span><span style=color:#f92672>*</span> GPIO_CFGCTL5 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0x40000114</span>;
+    <span style=color:#66d9ef>int</span> GPIO_BITSET_CFGCTL5 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>b0000101100100000 <span style=color:#f92672>&lt;&lt;</span> <span style=color:#ae81ff>16</span>;
+    <span style=color:#f92672>*</span>GPIO_CFGCTL5 <span style=color:#f92672>=</span> GPIO_BITSET_CFGCTL5;
+
+    <span style=color:#66d9ef>int</span><span style=color:#f92672>*</span> GPIO_CFGCTL32 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0x40000188</span>;
+    <span style=color:#66d9ef>int</span> GPIO_BITSET_OUTPUT_ENABLE <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;&lt;</span> <span style=color:#ae81ff>11</span>;
+    <span style=color:#f92672>*</span>GPIO_CFGCTL32 <span style=color:#f92672>=</span> GPIO_BITSET_OUTPUT_ENABLE;
+
+    <span style=color:#66d9ef>int</span><span style=color:#f92672>*</span> GPIO_CFGCTL34 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0x40000190</span>;
+    <span style=color:#66d9ef>int</span> GPIO_BITSET_OUTPUT <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span> <span style=color:#f92672>&lt;&lt;</span> <span style=color:#ae81ff>11</span>;
+    <span style=color:#66d9ef>while</span> (<span style=color:#ae81ff>1</span>) {
+        <span style=color:#75715e>// Trap execution to prevent weird results.
+</span><span style=color:#75715e></span>
+        <span style=color:#75715e>// Continuously set GPIO status to ensure it isn&#39;t
+</span><span style=color:#75715e></span>        <span style=color:#75715e>// quickly toggled off for some reason.
+</span><span style=color:#75715e></span>        <span style=color:#f92672>*</span>GPIO_CFGCTL34 <span style=color:#f92672>=</span> GPIO_BITSET_OUTPUT;
+    }
+}
+</code></pre></div><p>In assembly we do almost the same, except we use the GLB as a reference point and compute relative addresses using the <code>sw</code> instruction.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-asm data-lang=asm><span style=color:#75715e># RM = BL602 Reference Manual 1.2. See the Pine64 bl602-docs repo.
+</span><span style=color:#75715e></span>
+<span style=color:#75715e># Global Register base address. Page 23 of the RM.
+</span><span style=color:#75715e></span><span style=color:#a6e22e>.set</span> <span style=color:#66d9ef>GLB_BASE</span>, <span style=color:#ae81ff>0x40000000</span>
+<span style=color:#75715e># GPIO 10 and 11 configuration. Page 36 of the RM.
+</span><span style=color:#75715e></span><span style=color:#a6e22e>.set</span> <span style=color:#66d9ef>GPIO_CFGCTL5_OFFSET</span>, <span style=color:#ae81ff>0x114</span>
+
+<span style=color:#75715e># GPIO Output Register. Not described in RM.
+</span><span style=color:#75715e></span><span style=color:#a6e22e>.set</span> <span style=color:#66d9ef>GPIO_CFGCTL32_OFFSET</span>, <span style=color:#ae81ff>0x188</span>
+
+<span style=color:#75715e># GPIO Output Enable register. Not described in RM.
+</span><span style=color:#75715e></span><span style=color:#a6e22e>.set</span> <span style=color:#66d9ef>GPIO_CFGCTL34_OFFSET</span>, <span style=color:#ae81ff>0x190</span>
+
+<span style=color:#75715e># Bitset to set GP11FUNC to 11 (SWGPIO), Pullup to 1
+</span><span style=color:#75715e># and rest to zero. Page 36 of the RM.
+</span><span style=color:#75715e># GPIO11 are the 16 highest bits.
+</span><span style=color:#75715e></span><span style=color:#a6e22e>.set</span> <span style=color:#66d9ef>GPIO_BITSET_CFGCTL5</span>, <span style=color:#ae81ff>0</span><span style=color:#66d9ef>b0000101100010000</span> <span style=color:#960050;background-color:#1e0010>&lt;&lt;</span> <span style=color:#ae81ff>16</span>
+
+<span style=color:#75715e># Bitset for Output and Output Enable register. 11th bit = GPIO11.
+</span><span style=color:#75715e># High enables the output.
+</span><span style=color:#75715e></span><span style=color:#a6e22e>.set</span> <span style=color:#66d9ef>GPIO_BITSET_OUTPUT_ENABLE</span>, <span style=color:#ae81ff>1</span> <span style=color:#960050;background-color:#1e0010>&lt;&lt;</span> <span style=color:#ae81ff>11</span>
+
+<span style=color:#75715e># Low enables the LED because the GPIO sinks current.
+</span><span style=color:#75715e></span><span style=color:#a6e22e>.set</span> <span style=color:#66d9ef>GPIO_BITSET_OUTPUT</span>, <span style=color:#ae81ff>0</span> <span style=color:#960050;background-color:#1e0010>&lt;&lt;</span> <span style=color:#ae81ff>11</span>
+
+<span style=color:#a6e22e>.section</span> <span style=color:#66d9ef>.text</span>
+
+main:
+    <span style=color:#75715e># la = Load Address
+</span><span style=color:#75715e></span>    <span style=color:#75715e># Can be used to compute an offset from address, 
+</span><span style=color:#75715e></span>    <span style=color:#75715e># but not used here.
+</span><span style=color:#75715e></span>    <span style=color:#75715e># Load GLB_BASE pointer into &#39;temporary1&#39;
+</span><span style=color:#75715e></span>    <span style=color:#75715e># int* t1 = (int*) GLB_BASE;
+</span><span style=color:#75715e></span>    <span style=color:#a6e22e>la</span> <span style=color:#66d9ef>t1</span>, <span style=color:#66d9ef>GLB_BASE</span>
+
+    <span style=color:#75715e># Load bitset for config control 5 into &#39;temporary2&#39;
+</span><span style=color:#75715e></span>    <span style=color:#75715e># int t2 = GPIO_BITSET_CFGCTL5;
+</span><span style=color:#75715e></span>    <span style=color:#a6e22e>la</span> <span style=color:#66d9ef>t2</span>, <span style=color:#66d9ef>GPIO_BITSET_CFGCTL5</span>
+
+    <span style=color:#75715e># sw = Store Word (32 bits)
+</span><span style=color:#75715e></span>    <span style=color:#75715e># Store &#39;temporary2&#39; in GLB_BASE pointer, plus the
+</span><span style=color:#75715e></span>    <span style=color:#75715e># GPIO10/GPIO11 register offset.
+</span><span style=color:#75715e></span>    <span style=color:#75715e># *(t1 + GPIO_CFGCTL5_OFFSET) = t2;
+</span><span style=color:#75715e></span>    <span style=color:#a6e22e>sw</span> <span style=color:#66d9ef>t2</span>, <span style=color:#66d9ef>GPIO_CFGCTL5_OFFSET</span>(<span style=color:#66d9ef>t1</span>)
+
+    <span style=color:#75715e># Load bitset for enabling GPIO11 into &#39;temporary2&#39;.
+</span><span style=color:#75715e></span>    <span style=color:#75715e># t2 = GPIO_BITSET_OUTPUT_ENABLE; 
+</span><span style=color:#75715e></span>    <span style=color:#a6e22e>la</span> <span style=color:#66d9ef>t2</span>, <span style=color:#66d9ef>GPIO_BITSET_OUTPUT_ENABLE</span>
+
+    <span style=color:#75715e># Store &#39;temporary2&#39; in GLB_BASE pointer, plus the
+</span><span style=color:#75715e></span>    <span style=color:#75715e># Output Enable register offset.
+</span><span style=color:#75715e></span>    <span style=color:#75715e># *(t1 + GPIO_CFGCTL34_OFFSET) = t2;
+</span><span style=color:#75715e></span>    <span style=color:#a6e22e>sw</span> <span style=color:#66d9ef>t2</span>, <span style=color:#66d9ef>GPIO_CFGCTL34_OFFSET</span>(<span style=color:#66d9ef>t1</span>)
+
+    <span style=color:#75715e># t2 = GPIO_BITSET_OUTPUT;
+</span><span style=color:#75715e></span>    <span style=color:#75715e># The bitset for output enable should not be used for
+</span><span style=color:#75715e></span>    <span style=color:#75715e># output.
+</span><span style=color:#75715e></span>    <span style=color:#a6e22e>la</span> <span style=color:#66d9ef>t2</span>, <span style=color:#66d9ef>GPIO_BITSET_OUTPUT</span>
+
+<span style=color:#75715e># Loop label.
+</span><span style=color:#75715e></span>loop:
+
+    <span style=color:#75715e># Store &#39;temporary2&#39; in GLB_BASE pointer, plus the
+</span><span style=color:#75715e></span>    <span style=color:#75715e># Out register offset.
+</span><span style=color:#75715e></span>    <span style=color:#75715e># This is the bit you would switch in order to blink
+</span><span style=color:#75715e></span>    <span style=color:#75715e># LED.
+</span><span style=color:#75715e></span>    <span style=color:#75715e># *(t1 + GPIO_CFGCTL32_OFFSET) = t2;
+</span><span style=color:#75715e></span>    <span style=color:#a6e22e>sw</span> <span style=color:#66d9ef>t2</span>, <span style=color:#66d9ef>GPIO_CFGCTL32_OFFSET</span>(<span style=color:#66d9ef>t1</span>)
+
+    <span style=color:#75715e># Unconditionally Jump to loop.
+</span><span style=color:#75715e></span>    <span style=color:#75715e># goto loop;
+</span><span style=color:#75715e></span>    <span style=color:#a6e22e>j</span> <span style=color:#66d9ef>loop</span>
+</code></pre></div><h2 id=building-linking-and-flashing>Building, linking and flashing</h2><p>The general approach is to:</p><ol><li>build the assembly with <code>as</code>,</li><li>link it with <code>ld</code>,</li><li>convert the ELF file to binary with <code>objcopy</code>,</li><li>flash it to the board with <code>blflash</code>.</li></ol><p>The <a href=https://github.com/pine64/bl_iot_sdk>Pine64</a> version of the repository include the necessary <code>riscv64-unknown-elf</code> versions of every tool mentioned above (in <code>toolchain/riscv/Linux/bin</code>), except for <code>blflash</code> which can be found <a href=https://github.com/spacemeowx2/blflash>here</a>.</p><p>Exact commands can be found in the <code>Makefile</code> at the <a href=https://github.com/gtker/bl602-assembly>git repository</a>.</p></main><footer><hr>© GTKer.com 2020 | <a href=mailto:contact@gtker.com>Contact</a></footer></body></html>
