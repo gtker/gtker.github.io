@@ -1,0 +1,19 @@
+@startuml
+Client -> Server: Username
+
+Server -> Server: Find existing session key\nassociated with user
+
+Server -> Client: Server data
+
+Client <- Client: Generate client data
+Client <- Client: Calculate reconnect proof
+
+Client -> Server: Client data,\nreconnect proof
+
+Server -> Server: Calculate reconnect proof
+
+Server -> Client: Send 'Reconect OK'
+
+Client -> Server: 'Send Realmlist'
+Server -> Client: Realmlist
+@enduml

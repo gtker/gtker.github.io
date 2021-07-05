@@ -1,0 +1,23 @@
+@startuml
+object calculate_session_key
+object calculate_password_verifier
+object calculate_server_public_key
+object calculate_u
+object calculate_S
+object calculate_interleaved
+object calculate_server_proof
+object calculate_xor_hash
+object calculate_client_proof
+object calculate_reconnect_proof
+object calculate_x 
+
+object calculate_client_public_key
+
+calculate_x --> calculate_password_verifier
+calculate_u --> calculate_session_key
+calculate_S --> calculate_session_key
+calculate_interleaved --> calculate_session_key
+
+calculate_xor_hash --> calculate_client_proof
+
+@enduml

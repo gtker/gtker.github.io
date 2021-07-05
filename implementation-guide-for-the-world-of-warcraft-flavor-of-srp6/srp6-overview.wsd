@@ -1,0 +1,23 @@
+@startuml
+Client -> Server: Username
+
+Server -> Server: Retrieve password verifier \nand salt
+Server -> Server: Generate private \nand public key
+
+Server -> Client: Server public key,\nsalt, \nlarge safe prime,\ngenerator
+
+Client <- Client: Generate private \nand public key
+Client <- Client: Calculate session key
+Client <- Client: Calculate client proof
+
+Client -> Server: Client public key,\nclient proof
+
+Server -> Server: Calculate session key
+Server -> Server: Verify client proof
+
+Server -> Client: Send server proof
+
+Client <- Client: Verify server proof
+Client -> Server: 'Send Realmlist'
+Server -> Client: Realmlist
+@enduml
