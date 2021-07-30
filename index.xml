@@ -4,7 +4,7 @@ the 8 page, 20 year old, very broad and unspecific RFC that describes SRP6 in re
 <p>The goal of this article is to be an approachable,
 complete guide to implementing the protocol specifically for WoW 1.12 without requiring external references.</p>
 <p>The article starts out by giving a high level overview of the protocol and the specifics of the WoW implementation before
-giving a function-by-function implementation guide, including files for verification and examples of implementation in Rust and C++.</p>
+giving a function-by-function implementation guide, including files for verification and examples of implementation in Rust, C++ and Elixir.</p>
 <p>Important terms have been highlighted with <strong>bold</strong>. The exact definitions of these will come later in the article.</p>
 <p>This article will only cover the SRP6 protocol, not the network aspects of authenticating with a client.</p>
 <p><strong>This is not intended to be a guide for production usage. I have no cryptographic experience and essentially stumbled upon the solutions by accident.
