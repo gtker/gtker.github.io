@@ -66,22 +66,22 @@ This means that if your arbitrary size integer has generic
 <p>If you convert the number to big endian bytes the most significant byte, <code>AB</code>, is in the first position and the rest follow along.
 In little endian bytes the least significant byte, <code>CD</code>, is the in the first position followed by the second least significant byte, <code>AB</code> in this case.</p>
 <p>See the psuedo code below to build a mental model of endianness.</p>
-<pre><code>BigInt value = 0xABCD
+<pre tabindex="0"><code>BigInt value = 0xABCD
 byte[] big_endian = { 0xAB, 0xCD }
 byte[] little_endian = {0xCD, 0xAB }
 </code></pre><p>To test your <code>BigInt</code> implementation, try to load up the hexadecimal number <code>ABCD</code> and get it as bytes.
 The Rust <code>num_bigint</code> library has both <code>to_bytes_le()</code> and <code>to_bytes_be()</code> so there&rsquo;s no confusion.
 Make a note of whether the bytes you get are little endian or big endian.</p>
 <p><a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=f5f7ea4392b514ca20be74d23ad6f122">Rust Playground</a></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">use</span> num_bigint; <span style="color:#75715e">// 0.4.0
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">use</span> num_traits::Num;
-
-<span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
-    <span style="color:#66d9ef">let</span> number <span style="color:#f92672">=</span> num_bigint::BigInt::from_str_radix(<span style="color:#e6db74">&#34;ABCD&#34;</span>, <span style="color:#ae81ff">16</span>).unwrap();
-    dbg<span style="color:#f92672">!</span>(<span style="color:#f92672">&amp;</span>number.to_bytes_be()); <span style="color:#75715e">// Outputs [ 171, 205 ] which is [ 0xAB, 0xCD ] in hex
-</span><span style="color:#75715e"></span>    dbg<span style="color:#f92672">!</span>(<span style="color:#f92672">&amp;</span>number.to_bytes_le()); <span style="color:#75715e">// Outputs [ 205, 171 ] which is [ 0xCD, 0xAB ] in hex
-</span><span style="color:#75715e"></span>}
-</code></pre></div><p>Remember that there&rsquo;s a different between the string representation and the literal bytes representation.
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">use</span> num_bigint; <span style="color:#75715e">// 0.4.0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">use</span> num_traits::Num;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> number <span style="color:#f92672">=</span> num_bigint::BigInt::from_str_radix(<span style="color:#e6db74">&#34;ABCD&#34;</span>, <span style="color:#ae81ff">16</span>).unwrap();
+</span></span><span style="display:flex;"><span>    dbg!(<span style="color:#f92672">&amp;</span>number.to_bytes_be()); <span style="color:#75715e">// Outputs [ 171, 205 ] which is [ 0xAB, 0xCD ] in hex
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    dbg!(<span style="color:#f92672">&amp;</span>number.to_bytes_le()); <span style="color:#75715e">// Outputs [ 205, 171 ] which is [ 0xCD, 0xAB ] in hex
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>Remember that there&rsquo;s a different between the string representation and the literal bytes representation.
 A hexadecimal string is just a human readable representation of the value, the value of the characters that make up the string is not the same.</p>
 <h3 id="padding">Padding</h3>
 <p>All operations are performed on padded arrays, the sizes for different types can be seen below.
@@ -153,20 +153,20 @@ Do not worry about understanding why the different sizes are chosen, most are si
 <h3 id="constants">Constants</h3>
 <p>The <strong>large safe prime</strong> should always be <code>0x894B645E89E1535BBDAD5B8B290650530801B18EBFBF5E8FAB3C82872A3E9BB7</code> (big endian string).
 The <strong>large safe prime</strong> can be expressed as a <strong>little endian</strong> Rust array like</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">const</span> LARGE_SAFE_PRIME_LITTLE_ENDIAN: [<span style="color:#66d9ef">u8</span>; <span style="color:#ae81ff">32</span>] <span style="color:#f92672">=</span> [
-    <span style="color:#ae81ff">0xb7</span>, <span style="color:#ae81ff">0x9b</span>, <span style="color:#ae81ff">0x3e</span>, <span style="color:#ae81ff">0x2a</span>, <span style="color:#ae81ff">0x87</span>, <span style="color:#ae81ff">0x82</span>, <span style="color:#ae81ff">0x3c</span>, <span style="color:#ae81ff">0xab</span>,
-    <span style="color:#ae81ff">0x8f</span>, <span style="color:#ae81ff">0x5e</span>, <span style="color:#ae81ff">0xbf</span>, <span style="color:#ae81ff">0xbf</span>, <span style="color:#ae81ff">0x8e</span>, <span style="color:#ae81ff">0xb1</span>, <span style="color:#ae81ff">0x01</span>, <span style="color:#ae81ff">0x08</span>,
-    <span style="color:#ae81ff">0x53</span>, <span style="color:#ae81ff">0x50</span>, <span style="color:#ae81ff">0x06</span>, <span style="color:#ae81ff">0x29</span>, <span style="color:#ae81ff">0x8b</span>, <span style="color:#ae81ff">0x5b</span>, <span style="color:#ae81ff">0xad</span>, <span style="color:#ae81ff">0xbd</span>,
-    <span style="color:#ae81ff">0x5b</span>, <span style="color:#ae81ff">0x53</span>, <span style="color:#ae81ff">0xe1</span>, <span style="color:#ae81ff">0x89</span>, <span style="color:#ae81ff">0x5e</span>, <span style="color:#ae81ff">0x64</span>, <span style="color:#ae81ff">0x4b</span>, <span style="color:#ae81ff">0x89</span>
-];
-</code></pre></div><p>or as a <strong>big endian</strong> Rust array like</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">const</span> LARGE_SAFE_PRIME_BIG_ENDIAN: [<span style="color:#66d9ef">u8</span>; <span style="color:#ae81ff">32</span>] <span style="color:#f92672">=</span> [
-    <span style="color:#ae81ff">0x89</span>, <span style="color:#ae81ff">0x4b</span>, <span style="color:#ae81ff">0x64</span>, <span style="color:#ae81ff">0x5e</span>, <span style="color:#ae81ff">0x89</span>, <span style="color:#ae81ff">0xe1</span>, <span style="color:#ae81ff">0x53</span>, <span style="color:#ae81ff">0x5b</span>,
-    <span style="color:#ae81ff">0xbd</span>, <span style="color:#ae81ff">0xad</span>, <span style="color:#ae81ff">0x5b</span>, <span style="color:#ae81ff">0x8b</span>, <span style="color:#ae81ff">0x29</span>, <span style="color:#ae81ff">0x06</span>, <span style="color:#ae81ff">0x50</span>, <span style="color:#ae81ff">0x53</span>,
-    <span style="color:#ae81ff">0x08</span>, <span style="color:#ae81ff">0x01</span>, <span style="color:#ae81ff">0xb1</span>, <span style="color:#ae81ff">0x8e</span>, <span style="color:#ae81ff">0xbf</span>, <span style="color:#ae81ff">0xbf</span>, <span style="color:#ae81ff">0x5e</span>, <span style="color:#ae81ff">0x8f</span>,
-    <span style="color:#ae81ff">0xab</span>, <span style="color:#ae81ff">0x3c</span>, <span style="color:#ae81ff">0x82</span>, <span style="color:#ae81ff">0x87</span>, <span style="color:#ae81ff">0x2a</span>, <span style="color:#ae81ff">0x3e</span>, <span style="color:#ae81ff">0x9b</span>, <span style="color:#ae81ff">0xb7</span>,
-];
-</code></pre></div><p>The <strong>generator</strong> should always be <code>7</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">const</span> LARGE_SAFE_PRIME_LITTLE_ENDIAN: [<span style="color:#66d9ef">u8</span>; <span style="color:#ae81ff">32</span>] <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0xb7</span>, <span style="color:#ae81ff">0x9b</span>, <span style="color:#ae81ff">0x3e</span>, <span style="color:#ae81ff">0x2a</span>, <span style="color:#ae81ff">0x87</span>, <span style="color:#ae81ff">0x82</span>, <span style="color:#ae81ff">0x3c</span>, <span style="color:#ae81ff">0xab</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0x8f</span>, <span style="color:#ae81ff">0x5e</span>, <span style="color:#ae81ff">0xbf</span>, <span style="color:#ae81ff">0xbf</span>, <span style="color:#ae81ff">0x8e</span>, <span style="color:#ae81ff">0xb1</span>, <span style="color:#ae81ff">0x01</span>, <span style="color:#ae81ff">0x08</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0x53</span>, <span style="color:#ae81ff">0x50</span>, <span style="color:#ae81ff">0x06</span>, <span style="color:#ae81ff">0x29</span>, <span style="color:#ae81ff">0x8b</span>, <span style="color:#ae81ff">0x5b</span>, <span style="color:#ae81ff">0xad</span>, <span style="color:#ae81ff">0xbd</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0x5b</span>, <span style="color:#ae81ff">0x53</span>, <span style="color:#ae81ff">0xe1</span>, <span style="color:#ae81ff">0x89</span>, <span style="color:#ae81ff">0x5e</span>, <span style="color:#ae81ff">0x64</span>, <span style="color:#ae81ff">0x4b</span>, <span style="color:#ae81ff">0x89</span>
+</span></span><span style="display:flex;"><span>];
+</span></span></code></pre></div><p>or as a <strong>big endian</strong> Rust array like</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">const</span> LARGE_SAFE_PRIME_BIG_ENDIAN: [<span style="color:#66d9ef">u8</span>; <span style="color:#ae81ff">32</span>] <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0x89</span>, <span style="color:#ae81ff">0x4b</span>, <span style="color:#ae81ff">0x64</span>, <span style="color:#ae81ff">0x5e</span>, <span style="color:#ae81ff">0x89</span>, <span style="color:#ae81ff">0xe1</span>, <span style="color:#ae81ff">0x53</span>, <span style="color:#ae81ff">0x5b</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0xbd</span>, <span style="color:#ae81ff">0xad</span>, <span style="color:#ae81ff">0x5b</span>, <span style="color:#ae81ff">0x8b</span>, <span style="color:#ae81ff">0x29</span>, <span style="color:#ae81ff">0x06</span>, <span style="color:#ae81ff">0x50</span>, <span style="color:#ae81ff">0x53</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0x08</span>, <span style="color:#ae81ff">0x01</span>, <span style="color:#ae81ff">0xb1</span>, <span style="color:#ae81ff">0x8e</span>, <span style="color:#ae81ff">0xbf</span>, <span style="color:#ae81ff">0xbf</span>, <span style="color:#ae81ff">0x5e</span>, <span style="color:#ae81ff">0x8f</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0xab</span>, <span style="color:#ae81ff">0x3c</span>, <span style="color:#ae81ff">0x82</span>, <span style="color:#ae81ff">0x87</span>, <span style="color:#ae81ff">0x2a</span>, <span style="color:#ae81ff">0x3e</span>, <span style="color:#ae81ff">0x9b</span>, <span style="color:#ae81ff">0xb7</span>,
+</span></span><span style="display:flex;"><span>];
+</span></span></code></pre></div><p>The <strong>generator</strong> should always be <code>7</code>.</p>
 <p>The <strong>k</strong> value should always be <code>3</code>.</p>
 <h3 id="aliases">Aliases</h3>
 <p>Previously terms like <strong>client public key</strong> and <strong>large safe prime</strong> have been used instead of the single letters <code>A</code> and <code>N</code> which are used in <a href="https://tools.ietf.org/html/rfc2945">RFC2945</a>.</p>
@@ -271,7 +271,7 @@ Test against the provided text files for every function to ensure that no mistak
 </li>
 </ul>
 <p>Calculating the password verifier in pseudo code would look like</p>
-<pre><code>function calculate_password_verifier
+<pre tabindex="0"><code>function calculate_password_verifier
     argument username: string
     argument password: string
     argument salt: little endian array of 32 bytes
@@ -332,13 +332,13 @@ Test against the provided text files for every function to ensure that no mistak
 </li>
 </ul>
 <p>Calculating <code>x</code> in pseudo code would look like</p>
-<pre><code>function caculate_x
+<pre tabindex="0"><code>function caculate_x
     argument username: string
     argument password: string
     argument salt: little endian array of 32 bytes
     returns little endian array of 20 bytes
 
-    interim = SHA1( username + &quot;:&quot; + password )
+    interim = SHA1( username + &#34;:&#34; + password )
 
     // Array concatenation
     return SHA1( salt + interim )
@@ -410,7 +410,7 @@ It contains the columns:</li>
 </li>
 </ul>
 <p>Calculating the <strong>server public key</strong> in pseudo code would look like:</p>
-<pre><code>function calculate_server_public_key
+<pre tabindex="0"><code>function calculate_server_public_key
     argument password_verifier: little endian array of 32 bytes
     argument server_private_key: little endian array of 32 bytes
     returns little endian array of 32 bytes
@@ -479,7 +479,7 @@ The calculation of the client and server <strong>S keys</strong> are below.</p>
 </li>
 </ul>
 <p>Calculating the <strong>client S key</strong> in pseudo code would look like:</p>
-<pre><code>function calculate_client_S_key
+<pre tabindex="0"><code>function calculate_client_S_key
     argument client_private_key: little endian array of 32 bytes
     argument server_public_key: little endian array of 32 bytes
     argument x: little endian array of 32 bytes
@@ -540,7 +540,7 @@ The calculation of the client and server <strong>S keys</strong> are below.</p>
 </li>
 </ul>
 <p>Calculating the <strong>server S key</strong> in pseudo code would look like:</p>
-<pre><code>function calculate_server_S_key
+<pre tabindex="0"><code>function calculate_server_S_key
     argument client_public_key: little endian array of 32 bytes
     argument password_verifier: little endian array of 32 bytes
     argument u: little endian array of 32 bytes
@@ -598,7 +598,7 @@ The calculation of the client and server <strong>S keys</strong> are below.</p>
 </li>
 </ul>
 <p>Calculating the <strong>server S key</strong> in pseudo code would look like:</p>
-<pre><code>function calculate_u
+<pre tabindex="0"><code>function calculate_u
     argument client_public_key: little endian array of 32 bytes
     argument server_public_key: little endian array of 32 bytes
     returns little endian array of 20 bytes
@@ -648,7 +648,7 @@ It is calculated as <code>K = SHA_Interleave(S)</code>, where:</p>
 The even elements of the split <strong>S key</strong> are then hashed, as are the odd elements.
 The two hashes are then zipped together, with the even elements in the first position.</p>
 <p>The <code>SHA_Interleave()</code> function in pseudo code would look like:</p>
-<pre><code>function split_s_key
+<pre tabindex="0"><code>function split_s_key
     argument s_key: little endian array of 32 bytes
 
     // if the _least_ significant byte is 0,
@@ -723,7 +723,7 @@ function calculate_interleaved
 </li>
 </ul>
 <p>Calculating the <strong>server proof</strong> in pseudo code would look like:</p>
-<pre><code>function calculate_server_proof
+<pre tabindex="0"><code>function calculate_server_proof
     argument client_public_key: little endian array of 32 bytes
     argument client_proof: little endian array of 20 bytes
     argument session_key: little endian array of 40 bytes
@@ -782,7 +782,7 @@ function calculate_interleaved
 </li>
 </ul>
 <p>Calculating the <strong>client proof</strong> in pseudo code would look like:</p>
-<pre><code>function calculate_client_proof
+<pre tabindex="0"><code>function calculate_client_proof
     argument xor_hash: little endian array of 20 bytes
     argument username: string
     argument session_key: little endian array of 40 bytes
@@ -847,7 +847,7 @@ See the verification values for the value.</p>
 </li>
 </ul>
 <p>Calculating the XOR Hash in pseudo code would look like:</p>
-<pre><code>function calculate_xor_hash
+<pre tabindex="0"><code>function calculate_xor_hash
     argument large_safe_prime: little endian array of 32 bytes
     argument generator: byte value
     returns little endian array of 20 bytes (SHA-1 hash)
@@ -869,11 +869,11 @@ See the verification values for the value.</p>
 </ul>
 <h5 id="verification-values-9">Verification values</h5>
 <p>I do not have verification values, although the precalculated hash with the <a href="#constants">Constant values</a> in Rust is:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">const</span> PRECALCULATED_XOR_HASH: [<span style="color:#66d9ef">u8</span>; <span style="color:#ae81ff">20</span>] <span style="color:#f92672">=</span> [
-    <span style="color:#ae81ff">221</span>, <span style="color:#ae81ff">123</span>, <span style="color:#ae81ff">176</span>, <span style="color:#ae81ff">58</span>, <span style="color:#ae81ff">56</span>, <span style="color:#ae81ff">172</span>, <span style="color:#ae81ff">115</span>, <span style="color:#ae81ff">17</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">152</span>, <span style="color:#ae81ff">124</span>,
-    <span style="color:#ae81ff">90</span>, <span style="color:#ae81ff">80</span>, <span style="color:#ae81ff">111</span>, <span style="color:#ae81ff">202</span>, <span style="color:#ae81ff">150</span>, <span style="color:#ae81ff">108</span>, <span style="color:#ae81ff">123</span>, <span style="color:#ae81ff">194</span>, <span style="color:#ae81ff">167</span>,
-];
-</code></pre></div><h3 id="client-public-key">Client public key</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> PRECALCULATED_XOR_HASH: [<span style="color:#66d9ef">u8</span>; <span style="color:#ae81ff">20</span>] <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">221</span>, <span style="color:#ae81ff">123</span>, <span style="color:#ae81ff">176</span>, <span style="color:#ae81ff">58</span>, <span style="color:#ae81ff">56</span>, <span style="color:#ae81ff">172</span>, <span style="color:#ae81ff">115</span>, <span style="color:#ae81ff">17</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">152</span>, <span style="color:#ae81ff">124</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">90</span>, <span style="color:#ae81ff">80</span>, <span style="color:#ae81ff">111</span>, <span style="color:#ae81ff">202</span>, <span style="color:#ae81ff">150</span>, <span style="color:#ae81ff">108</span>, <span style="color:#ae81ff">123</span>, <span style="color:#ae81ff">194</span>, <span style="color:#ae81ff">167</span>,
+</span></span><span style="display:flex;"><span>];
+</span></span></code></pre></div><h3 id="client-public-key">Client public key</h3>
 <p>Generating the <strong>client public key</strong> is not necessary if you&rsquo;re only writing the server part.</p>
 <p>The <strong>client public key</strong>, <code>A</code>, is calculated as <code>A = g^a % N</code>, where:</p>
 <ul>
@@ -891,7 +891,7 @@ See the verification values for the value.</p>
 </li>
 </ul>
 <p>Calculating the <strong>client public key</strong> in pseudo code would look like:</p>
-<pre><code>function calculate_client_public_key
+<pre tabindex="0"><code>function calculate_client_public_key
     argument client_private_key: little endian array of 32 bytes
     argument generator: 1 byte integer
     argument large_safe_prime: little endian array of 32 bytes
@@ -962,7 +962,7 @@ The <strong>reconnect proof</strong> is calculated as <code>SHA1( username | cli
 </li>
 </ul>
 <p>Calculating the <strong>client public key</strong> in pseudo code would look like:</p>
-<pre><code>function calculate_reconnect_proof
+<pre tabindex="0"><code>function calculate_reconnect_proof
     argument username: string
     argument client_data: little endian array of 16 bytes
     argument server_data: little endian array of 16 bytes
@@ -1031,7 +1031,7 @@ Individual images can be found at <a href="encryption/page-0.png">step 1</a>, <a
 </li>
 </ul>
 <p>In pseudo code this would look like:</p>
-<pre><code>function encrypt
+<pre tabindex="0"><code>function encrypt
     argument data: little endian array of length AL
     returns little endian array of length AL
     
@@ -1095,7 +1095,7 @@ Individual images can be found at <a href="encryption/page-0.png">step 1</a>, <a
 </li>
 </ul>
 <p>In pseudo code this would look like:</p>
-<pre><code>function decrypt
+<pre tabindex="0"><code>function decrypt
     argument data: little endian array of length AL
     returns little endian array of length AL
     
@@ -1162,7 +1162,7 @@ Individual images can be found at <a href="encryption/page-0.png">step 1</a>, <a
 </li>
 </ul>
 <p>Calculating the world proof in pseudo code would look like:</p>
-<pre><code>function calculate_world_server_proof
+<pre tabindex="0"><code>function calculate_world_server_proof
     argument username: string
     argument client_seed: unsigned 32 byte value, converted to little endian bytes
     argument server_seed: unsigned 32 byte value, converted to little endian bytes
@@ -1342,99 +1342,99 @@ Bit shifting <code>1 &lt;&lt; 11</code> will work.</p>
 <h2 id="c-and-assembly-examples">C and assembly examples</h2>
 <p>The C code is provided for reference only and has not been tested.
 In C we would do:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
-    <span style="color:#66d9ef">int</span><span style="color:#f92672">*</span> GPIO_CFGCTL5 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x40000114</span>;
-    <span style="color:#66d9ef">int</span> GPIO_BITSET_CFGCTL5 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>b0000101100100000 <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">16</span>;
-    <span style="color:#f92672">*</span>GPIO_CFGCTL5 <span style="color:#f92672">=</span> GPIO_BITSET_CFGCTL5;
-
-    <span style="color:#66d9ef">int</span><span style="color:#f92672">*</span> GPIO_CFGCTL32 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x40000188</span>;
-    <span style="color:#66d9ef">int</span> GPIO_BITSET_OUTPUT_ENABLE <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">11</span>;
-    <span style="color:#f92672">*</span>GPIO_CFGCTL32 <span style="color:#f92672">=</span> GPIO_BITSET_OUTPUT_ENABLE;
-
-    <span style="color:#66d9ef">int</span><span style="color:#f92672">*</span> GPIO_CFGCTL34 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x40000190</span>;
-    <span style="color:#66d9ef">int</span> GPIO_BITSET_OUTPUT <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">11</span>;
-    <span style="color:#66d9ef">while</span> (<span style="color:#ae81ff">1</span>) {
-        <span style="color:#75715e">// Trap execution to prevent weird results.
-</span><span style="color:#75715e"></span>
-        <span style="color:#75715e">// Continuously set GPIO status to ensure it isn&#39;t
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// quickly toggled off for some reason.
-</span><span style="color:#75715e"></span>        <span style="color:#f92672">*</span>GPIO_CFGCTL34 <span style="color:#f92672">=</span> GPIO_BITSET_OUTPUT;
-    }
-}
-</code></pre></div><p>In assembly we do almost the same, except we use the GLB as a reference point and compute relative addresses using the <code>sw</code> instruction.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-asm" data-lang="asm"><span style="color:#75715e"># RM = BL602 Reference Manual 1.2. See the Pine64 bl602-docs repo.
-</span><span style="color:#75715e"></span>
-<span style="color:#75715e"># Global Register base address. Page 23 of the RM.
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">.set</span> <span style="color:#66d9ef">GLB_BASE</span>, <span style="color:#ae81ff">0x40000000</span>
-<span style="color:#75715e"># GPIO 10 and 11 configuration. Page 36 of the RM.
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">.set</span> <span style="color:#66d9ef">GPIO_CFGCTL5_OFFSET</span>, <span style="color:#ae81ff">0x114</span>
-
-<span style="color:#75715e"># GPIO Output Register. Not described in RM.
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">.set</span> <span style="color:#66d9ef">GPIO_CFGCTL32_OFFSET</span>, <span style="color:#ae81ff">0x188</span>
-
-<span style="color:#75715e"># GPIO Output Enable register. Not described in RM.
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">.set</span> <span style="color:#66d9ef">GPIO_CFGCTL34_OFFSET</span>, <span style="color:#ae81ff">0x190</span>
-
-<span style="color:#75715e"># Bitset to set GP11FUNC to 11 (SWGPIO), Pullup to 1
-</span><span style="color:#75715e"># and rest to zero. Page 36 of the RM.
-</span><span style="color:#75715e"># GPIO11 are the 16 highest bits.
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">.set</span> <span style="color:#66d9ef">GPIO_BITSET_CFGCTL5</span>, <span style="color:#ae81ff">0</span><span style="color:#66d9ef">b0000101100010000</span> <span style="color:#960050;background-color:#1e0010">&lt;&lt;</span> <span style="color:#ae81ff">16</span>
-
-<span style="color:#75715e"># Bitset for Output and Output Enable register. 11th bit = GPIO11.
-</span><span style="color:#75715e"># High enables the output.
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">.set</span> <span style="color:#66d9ef">GPIO_BITSET_OUTPUT_ENABLE</span>, <span style="color:#ae81ff">1</span> <span style="color:#960050;background-color:#1e0010">&lt;&lt;</span> <span style="color:#ae81ff">11</span>
-
-<span style="color:#75715e"># Low enables the LED because the GPIO sinks current.
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">.set</span> <span style="color:#66d9ef">GPIO_BITSET_OUTPUT</span>, <span style="color:#ae81ff">0</span> <span style="color:#960050;background-color:#1e0010">&lt;&lt;</span> <span style="color:#ae81ff">11</span>
-
-<span style="color:#a6e22e">.section</span> <span style="color:#66d9ef">.text</span>
-
-main:
-    <span style="color:#75715e"># la = Load Address
-</span><span style="color:#75715e"></span>    <span style="color:#75715e"># Can be used to compute an offset from address, 
-</span><span style="color:#75715e"></span>    <span style="color:#75715e"># but not used here.
-</span><span style="color:#75715e"></span>    <span style="color:#75715e"># Load GLB_BASE pointer into &#39;temporary1&#39;
-</span><span style="color:#75715e"></span>    <span style="color:#75715e"># int* t1 = (int*) GLB_BASE;
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">la</span> <span style="color:#66d9ef">t1</span>, <span style="color:#66d9ef">GLB_BASE</span>
-
-    <span style="color:#75715e"># Load bitset for config control 5 into &#39;temporary2&#39;
-</span><span style="color:#75715e"></span>    <span style="color:#75715e"># int t2 = GPIO_BITSET_CFGCTL5;
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">la</span> <span style="color:#66d9ef">t2</span>, <span style="color:#66d9ef">GPIO_BITSET_CFGCTL5</span>
-
-    <span style="color:#75715e"># sw = Store Word (32 bits)
-</span><span style="color:#75715e"></span>    <span style="color:#75715e"># Store &#39;temporary2&#39; in GLB_BASE pointer, plus the
-</span><span style="color:#75715e"></span>    <span style="color:#75715e"># GPIO10/GPIO11 register offset.
-</span><span style="color:#75715e"></span>    <span style="color:#75715e"># *(t1 + GPIO_CFGCTL5_OFFSET) = t2;
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">sw</span> <span style="color:#66d9ef">t2</span>, <span style="color:#66d9ef">GPIO_CFGCTL5_OFFSET</span>(<span style="color:#66d9ef">t1</span>)
-
-    <span style="color:#75715e"># Load bitset for enabling GPIO11 into &#39;temporary2&#39;.
-</span><span style="color:#75715e"></span>    <span style="color:#75715e"># t2 = GPIO_BITSET_OUTPUT_ENABLE; 
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">la</span> <span style="color:#66d9ef">t2</span>, <span style="color:#66d9ef">GPIO_BITSET_OUTPUT_ENABLE</span>
-
-    <span style="color:#75715e"># Store &#39;temporary2&#39; in GLB_BASE pointer, plus the
-</span><span style="color:#75715e"></span>    <span style="color:#75715e"># Output Enable register offset.
-</span><span style="color:#75715e"></span>    <span style="color:#75715e"># *(t1 + GPIO_CFGCTL34_OFFSET) = t2;
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">sw</span> <span style="color:#66d9ef">t2</span>, <span style="color:#66d9ef">GPIO_CFGCTL34_OFFSET</span>(<span style="color:#66d9ef">t1</span>)
-
-    <span style="color:#75715e"># t2 = GPIO_BITSET_OUTPUT;
-</span><span style="color:#75715e"></span>    <span style="color:#75715e"># The bitset for output enable should not be used for
-</span><span style="color:#75715e"></span>    <span style="color:#75715e"># output.
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">la</span> <span style="color:#66d9ef">t2</span>, <span style="color:#66d9ef">GPIO_BITSET_OUTPUT</span>
-
-<span style="color:#75715e"># Loop label.
-</span><span style="color:#75715e"></span>loop:
-
-    <span style="color:#75715e"># Store &#39;temporary2&#39; in GLB_BASE pointer, plus the
-</span><span style="color:#75715e"></span>    <span style="color:#75715e"># Out register offset.
-</span><span style="color:#75715e"></span>    <span style="color:#75715e"># This is the bit you would switch in order to blink
-</span><span style="color:#75715e"></span>    <span style="color:#75715e"># LED.
-</span><span style="color:#75715e"></span>    <span style="color:#75715e"># *(t1 + GPIO_CFGCTL32_OFFSET) = t2;
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">sw</span> <span style="color:#66d9ef">t2</span>, <span style="color:#66d9ef">GPIO_CFGCTL32_OFFSET</span>(<span style="color:#66d9ef">t1</span>)
-
-    <span style="color:#75715e"># Unconditionally Jump to loop.
-</span><span style="color:#75715e"></span>    <span style="color:#75715e"># goto loop;
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">j</span> <span style="color:#66d9ef">loop</span>
-</code></pre></div><h2 id="building-linking-and-flashing">Building, linking and flashing</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span><span style="color:#f92672">*</span> GPIO_CFGCTL5 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x40000114</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> GPIO_BITSET_CFGCTL5 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>b0000101100100000 <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">16</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">*</span>GPIO_CFGCTL5 <span style="color:#f92672">=</span> GPIO_BITSET_CFGCTL5;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span><span style="color:#f92672">*</span> GPIO_CFGCTL32 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x40000188</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> GPIO_BITSET_OUTPUT_ENABLE <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">11</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">*</span>GPIO_CFGCTL32 <span style="color:#f92672">=</span> GPIO_BITSET_OUTPUT_ENABLE;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span><span style="color:#f92672">*</span> GPIO_CFGCTL34 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x40000190</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> GPIO_BITSET_OUTPUT <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">11</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (<span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Trap execution to prevent weird results.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Continuously set GPIO status to ensure it isn&#39;t
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">// quickly toggled off for some reason.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">*</span>GPIO_CFGCTL34 <span style="color:#f92672">=</span> GPIO_BITSET_OUTPUT;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>In assembly we do almost the same, except we use the GLB as a reference point and compute relative addresses using the <code>sw</code> instruction.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-asm" data-lang="asm"><span style="display:flex;"><span><span style="color:#75715e"># RM = BL602 Reference Manual 1.2. See the Pine64 bl602-docs repo.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Global Register base address. Page 23 of the RM.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">.set</span> <span style="color:#66d9ef">GLB_BASE</span>, <span style="color:#ae81ff">0x40000000</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># GPIO 10 and 11 configuration. Page 36 of the RM.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">.set</span> <span style="color:#66d9ef">GPIO_CFGCTL5_OFFSET</span>, <span style="color:#ae81ff">0x114</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># GPIO Output Register. Not described in RM.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">.set</span> <span style="color:#66d9ef">GPIO_CFGCTL32_OFFSET</span>, <span style="color:#ae81ff">0x188</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># GPIO Output Enable register. Not described in RM.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">.set</span> <span style="color:#66d9ef">GPIO_CFGCTL34_OFFSET</span>, <span style="color:#ae81ff">0x190</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Bitset to set GP11FUNC to 11 (SWGPIO), Pullup to 1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"># and rest to zero. Page 36 of the RM.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"># GPIO11 are the 16 highest bits.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">.set</span> <span style="color:#66d9ef">GPIO_BITSET_CFGCTL5</span>, <span style="color:#ae81ff">0</span><span style="color:#66d9ef">b0000101100010000</span> <span style="color:#960050;background-color:#1e0010">&lt;&lt;</span> <span style="color:#ae81ff">16</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Bitset for Output and Output Enable register. 11th bit = GPIO11.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"># High enables the output.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">.set</span> <span style="color:#66d9ef">GPIO_BITSET_OUTPUT_ENABLE</span>, <span style="color:#ae81ff">1</span> <span style="color:#960050;background-color:#1e0010">&lt;&lt;</span> <span style="color:#ae81ff">11</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Low enables the LED because the GPIO sinks current.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">.set</span> <span style="color:#66d9ef">GPIO_BITSET_OUTPUT</span>, <span style="color:#ae81ff">0</span> <span style="color:#960050;background-color:#1e0010">&lt;&lt;</span> <span style="color:#ae81ff">11</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">.section</span> <span style="color:#66d9ef">.text</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>main:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># la = Load Address
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e"># Can be used to compute an offset from address, 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e"># but not used here.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e"># Load GLB_BASE pointer into &#39;temporary1&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e"># int* t1 = (int*) GLB_BASE;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">la</span> <span style="color:#66d9ef">t1</span>, <span style="color:#66d9ef">GLB_BASE</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Load bitset for config control 5 into &#39;temporary2&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e"># int t2 = GPIO_BITSET_CFGCTL5;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">la</span> <span style="color:#66d9ef">t2</span>, <span style="color:#66d9ef">GPIO_BITSET_CFGCTL5</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># sw = Store Word (32 bits)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e"># Store &#39;temporary2&#39; in GLB_BASE pointer, plus the
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e"># GPIO10/GPIO11 register offset.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e"># *(t1 + GPIO_CFGCTL5_OFFSET) = t2;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">sw</span> <span style="color:#66d9ef">t2</span>, <span style="color:#66d9ef">GPIO_CFGCTL5_OFFSET</span>(<span style="color:#66d9ef">t1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Load bitset for enabling GPIO11 into &#39;temporary2&#39;.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e"># t2 = GPIO_BITSET_OUTPUT_ENABLE; 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">la</span> <span style="color:#66d9ef">t2</span>, <span style="color:#66d9ef">GPIO_BITSET_OUTPUT_ENABLE</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Store &#39;temporary2&#39; in GLB_BASE pointer, plus the
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e"># Output Enable register offset.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e"># *(t1 + GPIO_CFGCTL34_OFFSET) = t2;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">sw</span> <span style="color:#66d9ef">t2</span>, <span style="color:#66d9ef">GPIO_CFGCTL34_OFFSET</span>(<span style="color:#66d9ef">t1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># t2 = GPIO_BITSET_OUTPUT;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e"># The bitset for output enable should not be used for
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e"># output.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">la</span> <span style="color:#66d9ef">t2</span>, <span style="color:#66d9ef">GPIO_BITSET_OUTPUT</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Loop label.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>loop:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Store &#39;temporary2&#39; in GLB_BASE pointer, plus the
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e"># Out register offset.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e"># This is the bit you would switch in order to blink
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e"># LED.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e"># *(t1 + GPIO_CFGCTL32_OFFSET) = t2;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">sw</span> <span style="color:#66d9ef">t2</span>, <span style="color:#66d9ef">GPIO_CFGCTL32_OFFSET</span>(<span style="color:#66d9ef">t1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Unconditionally Jump to loop.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e"># goto loop;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">j</span> <span style="color:#66d9ef">loop</span>
+</span></span></code></pre></div><h2 id="building-linking-and-flashing">Building, linking and flashing</h2>
 <p>The general approach is to:</p>
 <ol>
 <li>build the assembly with <code>as</code>,</li>
@@ -1594,20 +1594,20 @@ It might be necessary to do this over several iterations, as services on the TV 
 
 <h2 id="testing">Testing</h2>
 <p>In order to test your solution you should, on Windows or Linux, run <code>nslookup [blocked domain] 8.8.8.8</code> and see that you get a <code>0.0.0.0</code> result back.</p>
-<section class="footnotes" role="doc-endnotes">
+<div class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn:1" role="doc-endnote">
-<p>M. H. Mazhar and Z. Shafiq, &ldquo;<a href="https://arxiv.org/pdf/2001.08288.pdf">Characterizing Smart Home IoT Traffic in the Wild</a>&rdquo;, 2020 IEEE/ACM Fifth International Conference on Internet-of-Things Design and Implementation (IoTDI), pp. 2, Mar. 2020. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<li id="fn:1">
+<p>M. H. Mazhar and Z. Shafiq, &ldquo;<a href="https://arxiv.org/pdf/2001.08288.pdf">Characterizing Smart Home IoT Traffic in the Wild</a>&rdquo;, 2020 IEEE/ACM Fifth International Conference on Internet-of-Things Design and Implementation (IoTDI), pp. 2, Mar. 2020.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
-</section>
+</div>
 ]]></content></entry><entry><title type="html">Improved way of rendering TeX math in Hugo</title><link href="https://gtker.com/improved-way-of-rendering-tex-math-in-hugo/"/><id>https://gtker.com/improved-way-of-rendering-tex-math-in-hugo/</id><author><name>Gtker</name></author><published>2020-11-29T00:09:00+00:00</published><updated>2020-11-29T00:09:00+00:00</updated><content type="html"><![CDATA[<p><a href="https://latkin.org/blog/about/">Lincoln Atkinson</a> wrote a post about <a href="https://latkin.org/blog/2016/08/07/better-tex-math-typesetting-in-hugo/">TeX math typesetting in Hugo</a> (<a href="https://web.archive.org/web/20201108141222/https://latkin.org/blog/2016/08/07/better-tex-math-typesetting-in-hugo/">archive</a>) where he described a solution that could do TeX math typesetting with and without Javascript enabled.</p>
 <p>I have improved slightly upon his method, creating a simple Python script to download the equation images prior to publication and serving them from the local web server.</p>
 <h2 id="why">Why?</h2>
 <p>The primary reason was that I wanted a missing <code>noscript</code> equation to be an error at compile time instead of just a dead link.
 When going to the <a href="https://latex.codecogs.com/">codecogs</a> website at the time of writing, I see the following in a little box:</p>
-<pre><code>Licence Details
+<pre tabindex="0"><code>Licence Details
 Registered use:     CLOUD
 Expiration date:    31-12-2020
 </code></pre><p>What does that mean?
@@ -1619,53 +1619,53 @@ It might mean that service transistions to a new backend at the start of 2021, o
 <p>The benefits of this approach is that the noscript equations still work before the script is run, it&rsquo;s just fetched from <code>codecogs.com</code> instead of locally.</p>
 <h2 id="script">Script</h2>
 <p>Running the script in the directory that contains the <code>public</code> folder will download equations, place them next to the <code>.html</code> file and replace the <code>src=</code> attribute.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/user/bin/env python3</span>
-<span style="color:#f92672">from</span> pathlib <span style="color:#f92672">import</span> Path
-<span style="color:#f92672">import</span> requests
-<span style="color:#f92672">import</span> urllib
-
-EXTENSION <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;svg&#34;</span>
-LATEX_URL <span style="color:#f92672">=</span> f<span style="color:#e6db74">&#34;https://latex.codecogs.com/{EXTENSION}.latex?&#34;</span>
-LATEX_INLINE <span style="color:#f92672">=</span> f<span style="color:#e6db74">&#34;https://latex.codecogs.com/{EXTENSION}.latex?\inline&amp;space;&#34;</span>
-
-<span style="color:#66d9ef">for</span> path <span style="color:#f92672">in</span> Path(<span style="color:#e6db74">&#39;public&#39;</span>)<span style="color:#f92672">.</span>rglob(<span style="color:#e6db74">&#39;*.html&#39;</span>):
-    contents <span style="color:#f92672">=</span> Path(path)<span style="color:#f92672">.</span>read_text();
-
-    <span style="color:#66d9ef">while</span> (LATEX_INLINE <span style="color:#f92672">in</span> contents) <span style="color:#f92672">or</span> (LATEX_URL <span style="color:#f92672">in</span> contents):
-        latex_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
-        <span style="color:#66d9ef">if</span> LATEX_INLINE <span style="color:#f92672">in</span> contents:
-            latex_url <span style="color:#f92672">=</span> LATEX_INLINE
-        <span style="color:#66d9ef">elif</span> LATEX_URL <span style="color:#f92672">in</span> contents:
-            latex_url <span style="color:#f92672">=</span> LATEX_URL
-        <span style="color:#66d9ef">else</span>:
-            <span style="color:#66d9ef">continue</span>
-
-        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;PATH: &#34;</span> <span style="color:#f92672">+</span> str(path))
-
-        index <span style="color:#f92672">=</span> contents<span style="color:#f92672">.</span>find(latex_url)
-        end <span style="color:#f92672">=</span> contents<span style="color:#f92672">.</span>find(<span style="color:#e6db74">&#34; title=&#34;</span>, index)
-        equation <span style="color:#f92672">=</span> contents[index <span style="color:#f92672">+</span> len(latex_url):end]
-        url <span style="color:#f92672">=</span> contents[index:end]
-
-        f <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>get(url)<span style="color:#f92672">.</span>content
-        <span style="color:#66d9ef">with</span> open(path<span style="color:#f92672">.</span>parent<span style="color:#f92672">.</span>joinpath(equation <span style="color:#f92672">+</span> f<span style="color:#e6db74">&#34;.{EXTENSION}&#34;</span>), <span style="color:#e6db74">&#39;wb&#39;</span>) <span style="color:#66d9ef">as</span> w:
-            w<span style="color:#f92672">.</span>write(f)
-
-        <span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">Replacing {url} with {urllib.parse.quote(equation)}.{EXTENSION}&#34;</span>)
-        contents <span style="color:#f92672">=</span> contents<span style="color:#f92672">.</span>replace(url, urllib<span style="color:#f92672">.</span>parse<span style="color:#f92672">.</span>quote(equation) <span style="color:#f92672">+</span> f<span style="color:#e6db74">&#34;.{EXTENSION}&#34;</span>)
-
-    <span style="color:#66d9ef">with</span> open(path, <span style="color:#e6db74">&#39;w&#39;</span>) <span style="color:#66d9ef">as</span> w:
-        w<span style="color:#f92672">.</span>write(contents)
-</code></pre></div><h2 id="future-work">Future work</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#!/user/bin/env python3</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pathlib <span style="color:#f92672">import</span> Path
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> requests
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> urllib
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>EXTENSION <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;svg&#34;</span>
+</span></span><span style="display:flex;"><span>LATEX_URL <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;https://latex.codecogs.com/</span><span style="color:#e6db74">{</span>EXTENSION<span style="color:#e6db74">}</span><span style="color:#e6db74">.latex?&#34;</span>
+</span></span><span style="display:flex;"><span>LATEX_INLINE <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;https://latex.codecogs.com/</span><span style="color:#e6db74">{</span>EXTENSION<span style="color:#e6db74">}</span><span style="color:#e6db74">.latex?\inline&amp;space;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> path <span style="color:#f92672">in</span> Path(<span style="color:#e6db74">&#39;public&#39;</span>)<span style="color:#f92672">.</span>rglob(<span style="color:#e6db74">&#39;*.html&#39;</span>):
+</span></span><span style="display:flex;"><span>    contents <span style="color:#f92672">=</span> Path(path)<span style="color:#f92672">.</span>read_text();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (LATEX_INLINE <span style="color:#f92672">in</span> contents) <span style="color:#f92672">or</span> (LATEX_URL <span style="color:#f92672">in</span> contents):
+</span></span><span style="display:flex;"><span>        latex_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> LATEX_INLINE <span style="color:#f92672">in</span> contents:
+</span></span><span style="display:flex;"><span>            latex_url <span style="color:#f92672">=</span> LATEX_INLINE
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> LATEX_URL <span style="color:#f92672">in</span> contents:
+</span></span><span style="display:flex;"><span>            latex_url <span style="color:#f92672">=</span> LATEX_URL
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;PATH: &#34;</span> <span style="color:#f92672">+</span> str(path))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        index <span style="color:#f92672">=</span> contents<span style="color:#f92672">.</span>find(latex_url)
+</span></span><span style="display:flex;"><span>        end <span style="color:#f92672">=</span> contents<span style="color:#f92672">.</span>find(<span style="color:#e6db74">&#34; title=&#34;</span>, index)
+</span></span><span style="display:flex;"><span>        equation <span style="color:#f92672">=</span> contents[index <span style="color:#f92672">+</span> len(latex_url):end]
+</span></span><span style="display:flex;"><span>        url <span style="color:#f92672">=</span> contents[index:end]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        f <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>get(url)<span style="color:#f92672">.</span>content
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">with</span> open(path<span style="color:#f92672">.</span>parent<span style="color:#f92672">.</span>joinpath(equation <span style="color:#f92672">+</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;.</span><span style="color:#e6db74">{</span>EXTENSION<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>), <span style="color:#e6db74">&#39;wb&#39;</span>) <span style="color:#66d9ef">as</span> w:
+</span></span><span style="display:flex;"><span>            w<span style="color:#f92672">.</span>write(f)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">Replacing </span><span style="color:#e6db74">{</span>url<span style="color:#e6db74">}</span><span style="color:#e6db74"> with </span><span style="color:#e6db74">{</span>urllib<span style="color:#f92672">.</span>parse<span style="color:#f92672">.</span>quote(equation)<span style="color:#e6db74">}</span><span style="color:#e6db74">.</span><span style="color:#e6db74">{</span>EXTENSION<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        contents <span style="color:#f92672">=</span> contents<span style="color:#f92672">.</span>replace(url, urllib<span style="color:#f92672">.</span>parse<span style="color:#f92672">.</span>quote(equation) <span style="color:#f92672">+</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;.</span><span style="color:#e6db74">{</span>EXTENSION<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> open(path, <span style="color:#e6db74">&#39;w&#39;</span>) <span style="color:#66d9ef">as</span> w:
+</span></span><span style="display:flex;"><span>        w<span style="color:#f92672">.</span>write(contents)
+</span></span></code></pre></div><h2 id="future-work">Future work</h2>
 <p>Ideally the equations would be done entirely at compile time without external dependencies.
 Currently it does not seem possible to do entirely in HTML, since the math requires some fonts that are not installed by default on most platforms.
 A LaTeX to SVG tool could be used, but would break the <code>hugo serve</code> tool since it does not seem possible to insert arbitrary commands in that process.</p>
-<section class="footnotes" role="doc-endnotes">
+<div class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn:1" role="doc-endnote">
-<p>Think of it like a function for Hugo that inserts text and can take parameters. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<li id="fn:1">
+<p>Think of it like a function for Hugo that inserts text and can take parameters.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
-</section>
+</div>
 ]]></content></entry></feed>

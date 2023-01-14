@@ -1,46 +1,46 @@
 <!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Improved way of rendering TeX math in Hugo | GTKer.com</title><style>body{font-family:Optima,Candara,Calibri,Arial,sans-serif}code{font-family:lucida console,Monaco,monospace;font-size:85%}</style><link rel=stylesheet href=https://gtker.com/sass/style.min.css><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest></head><body><nav><ul class=menu><li><a href=/>Home</a></li><li><a href=/about/>About</a></li><li><a href=/tags/>Tags</a></li><li><a href=/index.xml>Atom/RSS</a></li></ul><hr></nav><div class=article-meta><h1><span class=title>Improved way of rendering TeX math in Hugo</span></h1><h2 class=date>2020-11-29</h2></div><p class=terms>Tags: <a href=/tags/hugo>Hugo</a> <a href=/tags/equations>Equations</a> <a href=/tags/katex>KaTex</a> <a href=/tags/tex>TeX</a> <a href=/tags/python>Python</a></p><nav id=TableOfContents><ul><li><a href=#why>Why?</a></li><li><a href=#how>How?</a></li><li><a href=#script>Script</a></li><li><a href=#future-work>Future work</a></li></ul></nav><main><p><a href=https://latkin.org/blog/about/>Lincoln Atkinson</a> wrote a post about <a href=https://latkin.org/blog/2016/08/07/better-tex-math-typesetting-in-hugo/>TeX math typesetting in Hugo</a> (<a href=https://web.archive.org/web/20201108141222/https://latkin.org/blog/2016/08/07/better-tex-math-typesetting-in-hugo/>archive</a>) where he described a solution that could do TeX math typesetting with and without Javascript enabled.</p><p>I have improved slightly upon his method, creating a simple Python script to download the equation images prior to publication and serving them from the local web server.</p><h2 id=why>Why?</h2><p>The primary reason was that I wanted a missing <code>noscript</code> equation to be an error at compile time instead of just a dead link.
-When going to the <a href=https://latex.codecogs.com/>codecogs</a> website at the time of writing, I see the following in a little box:</p><pre><code>Licence Details
+When going to the <a href=https://latex.codecogs.com/>codecogs</a> website at the time of writing, I see the following in a little box:</p><pre tabindex=0><code>Licence Details
 Registered use:     CLOUD
 Expiration date:    31-12-2020
 </code></pre><p>What does that mean?
 I have no idea.
-It might mean that service transistions to a new backend at the start of 2021, or it might mean that the service completely shuts down.</p><h2 id=how>How?</h2><p>Lincoln created a shortcode<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup> that inserts an image with <code>src=latex.codecogs.com/gif.latex?</code> followed by the equation to render, ending with <code>title=</code> (the <code>"</code> are removed by Hugo).</p><p>Knowing this it is possible to create a script that finds all instances of the <code>codecogs.com</code> sources, downloads the equation as a file and replaces the <code>src=</code> attribute with the local file.</p><p>The benefits of this approach is that the noscript equations still work before the script is run, it&rsquo;s just fetched from <code>codecogs.com</code> instead of locally.</p><h2 id=script>Script</h2><p>Running the script in the directory that contains the <code>public</code> folder will download equations, place them next to the <code>.html</code> file and replace the <code>src=</code> attribute.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e>#!/user/bin/env python3</span>
-<span style=color:#f92672>from</span> pathlib <span style=color:#f92672>import</span> Path
-<span style=color:#f92672>import</span> requests
-<span style=color:#f92672>import</span> urllib
-
-EXTENSION <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;svg&#34;</span>
-LATEX_URL <span style=color:#f92672>=</span> f<span style=color:#e6db74>&#34;https://latex.codecogs.com/{EXTENSION}.latex?&#34;</span>
-LATEX_INLINE <span style=color:#f92672>=</span> f<span style=color:#e6db74>&#34;https://latex.codecogs.com/{EXTENSION}.latex?\inline&amp;space;&#34;</span>
-
-<span style=color:#66d9ef>for</span> path <span style=color:#f92672>in</span> Path(<span style=color:#e6db74>&#39;public&#39;</span>)<span style=color:#f92672>.</span>rglob(<span style=color:#e6db74>&#39;*.html&#39;</span>):
-    contents <span style=color:#f92672>=</span> Path(path)<span style=color:#f92672>.</span>read_text();
-
-    <span style=color:#66d9ef>while</span> (LATEX_INLINE <span style=color:#f92672>in</span> contents) <span style=color:#f92672>or</span> (LATEX_URL <span style=color:#f92672>in</span> contents):
-        latex_url <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;&#34;</span>
-        <span style=color:#66d9ef>if</span> LATEX_INLINE <span style=color:#f92672>in</span> contents:
-            latex_url <span style=color:#f92672>=</span> LATEX_INLINE
-        <span style=color:#66d9ef>elif</span> LATEX_URL <span style=color:#f92672>in</span> contents:
-            latex_url <span style=color:#f92672>=</span> LATEX_URL
-        <span style=color:#66d9ef>else</span>:
-            <span style=color:#66d9ef>continue</span>
-
-        <span style=color:#66d9ef>print</span>(<span style=color:#e6db74>&#34;PATH: &#34;</span> <span style=color:#f92672>+</span> str(path))
-
-        index <span style=color:#f92672>=</span> contents<span style=color:#f92672>.</span>find(latex_url)
-        end <span style=color:#f92672>=</span> contents<span style=color:#f92672>.</span>find(<span style=color:#e6db74>&#34; title=&#34;</span>, index)
-        equation <span style=color:#f92672>=</span> contents[index <span style=color:#f92672>+</span> len(latex_url):end]
-        url <span style=color:#f92672>=</span> contents[index:end]
-
-        f <span style=color:#f92672>=</span> requests<span style=color:#f92672>.</span>get(url)<span style=color:#f92672>.</span>content
-        <span style=color:#66d9ef>with</span> open(path<span style=color:#f92672>.</span>parent<span style=color:#f92672>.</span>joinpath(equation <span style=color:#f92672>+</span> f<span style=color:#e6db74>&#34;.{EXTENSION}&#34;</span>), <span style=color:#e6db74>&#39;wb&#39;</span>) <span style=color:#66d9ef>as</span> w:
-            w<span style=color:#f92672>.</span>write(f)
-
-        <span style=color:#66d9ef>print</span>(f<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\t</span><span style=color:#e6db74>Replacing {url} with {urllib.parse.quote(equation)}.{EXTENSION}&#34;</span>)
-        contents <span style=color:#f92672>=</span> contents<span style=color:#f92672>.</span>replace(url, urllib<span style=color:#f92672>.</span>parse<span style=color:#f92672>.</span>quote(equation) <span style=color:#f92672>+</span> f<span style=color:#e6db74>&#34;.{EXTENSION}&#34;</span>)
-
-    <span style=color:#66d9ef>with</span> open(path, <span style=color:#e6db74>&#39;w&#39;</span>) <span style=color:#66d9ef>as</span> w:
-        w<span style=color:#f92672>.</span>write(contents)
-</code></pre></div><h2 id=future-work>Future work</h2><p>Ideally the equations would be done entirely at compile time without external dependencies.
+It might mean that service transistions to a new backend at the start of 2021, or it might mean that the service completely shuts down.</p><h2 id=how>How?</h2><p>Lincoln created a shortcode<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup> that inserts an image with <code>src=latex.codecogs.com/gif.latex?</code> followed by the equation to render, ending with <code>title=</code> (the <code>"</code> are removed by Hugo).</p><p>Knowing this it is possible to create a script that finds all instances of the <code>codecogs.com</code> sources, downloads the equation as a file and replaces the <code>src=</code> attribute with the local file.</p><p>The benefits of this approach is that the noscript equations still work before the script is run, it&rsquo;s just fetched from <code>codecogs.com</code> instead of locally.</p><h2 id=script>Script</h2><p>Running the script in the directory that contains the <code>public</code> folder will download equations, place them next to the <code>.html</code> file and replace the <code>src=</code> attribute.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e>#!/user/bin/env python3</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>from</span> pathlib <span style=color:#f92672>import</span> Path
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> requests
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> urllib
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>EXTENSION <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;svg&#34;</span>
+</span></span><span style=display:flex><span>LATEX_URL <span style=color:#f92672>=</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;https://latex.codecogs.com/</span><span style=color:#e6db74>{</span>EXTENSION<span style=color:#e6db74>}</span><span style=color:#e6db74>.latex?&#34;</span>
+</span></span><span style=display:flex><span>LATEX_INLINE <span style=color:#f92672>=</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;https://latex.codecogs.com/</span><span style=color:#e6db74>{</span>EXTENSION<span style=color:#e6db74>}</span><span style=color:#e6db74>.latex?\inline&amp;space;&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>for</span> path <span style=color:#f92672>in</span> Path(<span style=color:#e6db74>&#39;public&#39;</span>)<span style=color:#f92672>.</span>rglob(<span style=color:#e6db74>&#39;*.html&#39;</span>):
+</span></span><span style=display:flex><span>    contents <span style=color:#f92672>=</span> Path(path)<span style=color:#f92672>.</span>read_text();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>while</span> (LATEX_INLINE <span style=color:#f92672>in</span> contents) <span style=color:#f92672>or</span> (LATEX_URL <span style=color:#f92672>in</span> contents):
+</span></span><span style=display:flex><span>        latex_url <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;&#34;</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> LATEX_INLINE <span style=color:#f92672>in</span> contents:
+</span></span><span style=display:flex><span>            latex_url <span style=color:#f92672>=</span> LATEX_INLINE
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>elif</span> LATEX_URL <span style=color:#f92672>in</span> contents:
+</span></span><span style=display:flex><span>            latex_url <span style=color:#f92672>=</span> LATEX_URL
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>else</span>:
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>continue</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>&#34;PATH: &#34;</span> <span style=color:#f92672>+</span> str(path))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        index <span style=color:#f92672>=</span> contents<span style=color:#f92672>.</span>find(latex_url)
+</span></span><span style=display:flex><span>        end <span style=color:#f92672>=</span> contents<span style=color:#f92672>.</span>find(<span style=color:#e6db74>&#34; title=&#34;</span>, index)
+</span></span><span style=display:flex><span>        equation <span style=color:#f92672>=</span> contents[index <span style=color:#f92672>+</span> len(latex_url):end]
+</span></span><span style=display:flex><span>        url <span style=color:#f92672>=</span> contents[index:end]
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        f <span style=color:#f92672>=</span> requests<span style=color:#f92672>.</span>get(url)<span style=color:#f92672>.</span>content
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>with</span> open(path<span style=color:#f92672>.</span>parent<span style=color:#f92672>.</span>joinpath(equation <span style=color:#f92672>+</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;.</span><span style=color:#e6db74>{</span>EXTENSION<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>), <span style=color:#e6db74>&#39;wb&#39;</span>) <span style=color:#66d9ef>as</span> w:
+</span></span><span style=display:flex><span>            w<span style=color:#f92672>.</span>write(f)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\t</span><span style=color:#e6db74>Replacing </span><span style=color:#e6db74>{</span>url<span style=color:#e6db74>}</span><span style=color:#e6db74> with </span><span style=color:#e6db74>{</span>urllib<span style=color:#f92672>.</span>parse<span style=color:#f92672>.</span>quote(equation)<span style=color:#e6db74>}</span><span style=color:#e6db74>.</span><span style=color:#e6db74>{</span>EXTENSION<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>        contents <span style=color:#f92672>=</span> contents<span style=color:#f92672>.</span>replace(url, urllib<span style=color:#f92672>.</span>parse<span style=color:#f92672>.</span>quote(equation) <span style=color:#f92672>+</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;.</span><span style=color:#e6db74>{</span>EXTENSION<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>with</span> open(path, <span style=color:#e6db74>&#39;w&#39;</span>) <span style=color:#66d9ef>as</span> w:
+</span></span><span style=display:flex><span>        w<span style=color:#f92672>.</span>write(contents)
+</span></span></code></pre></div><h2 id=future-work>Future work</h2><p>Ideally the equations would be done entirely at compile time without external dependencies.
 Currently it does not seem possible to do entirely in HTML, since the math requires some fonts that are not installed by default on most platforms.
-A LaTeX to SVG tool could be used, but would break the <code>hugo serve</code> tool since it does not seem possible to insert arbitrary commands in that process.</p><section class=footnotes role=doc-endnotes><hr><ol><li id=fn:1 role=doc-endnote><p>Think of it like a function for Hugo that inserts text and can take parameters. <a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></section></main><footer><hr>© GTKer.com 2020 | <a href=mailto:contact@gtker.com>Contact</a></footer></body></html>
+A LaTeX to SVG tool could be used, but would break the <code>hugo serve</code> tool since it does not seem possible to insert arbitrary commands in that process.</p><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p>Think of it like a function for Hugo that inserts text and can take parameters.&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></div></main><footer><hr>© GTKer.com 2020 | <a href=mailto:contact@gtker.com>Contact</a></footer></body></html>
