@@ -1,4 +1,4 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Home on GTKer.com</title><link href="https://gtker.com/index.xml" rel="self"/><link href="https://gtker.com/"/><updated>2021-07-05T00:00:00+00:00</updated><id>https://gtker.com/</id><author><name>Gtker</name><email>contact@gtker.com</email></author><generator>Hugo -- gohugo.io</generator><entry><title type="html">Implementation Guide for the World of Warcraft flavor of SRP6</title><link href="https://gtker.com/implementation-guide-for-the-world-of-warcraft-flavor-of-srp6/"/><id>https://gtker.com/implementation-guide-for-the-world-of-warcraft-flavor-of-srp6/</id><author><name>Gtker</name></author><published>2021-07-05T00:00:00+00:00</published><updated>2023-01-14T00:00:00+00:00</updated><content type="html"><![CDATA[<p>The authentication protocol for authenticating with a World of Warcraft (WoW) server is widely available but not very well documented.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Home on GTKer.com</title><link href="https://gtker.com/index.xml" rel="self"/><link href="https://gtker.com/"/><updated>2021-07-05T00:00:00+00:00</updated><id>https://gtker.com/</id><author><name>Gtker</name><email>contact@gtker.com</email></author><generator>Hugo -- gohugo.io</generator><entry><title type="html">Implementation Guide for the World of Warcraft flavor of SRP6</title><link href="https://gtker.com/implementation-guide-for-the-world-of-warcraft-flavor-of-srp6/"/><id>https://gtker.com/implementation-guide-for-the-world-of-warcraft-flavor-of-srp6/</id><author><name>Gtker</name></author><published>2021-07-05T00:00:00+00:00</published><updated>2023-02-11T00:00:00+00:00</updated><content type="html"><![CDATA[<p>The authentication protocol for authenticating with a World of Warcraft (WoW) server is widely available but not very well documented.
 Most documentation is spread across forums or just directly links to <a href="https://tools.ietf.org/html/rfc2945">RFC2945</a>,
 the 8 page, 20 year old, very broad and unspecific RFC that describes SRP6 in relatively academic terms.</p>
 <p>The goal of this article is to be an approachable,
@@ -486,7 +486,7 @@ The calculation of the client and server <strong>S keys</strong> are below.</p>
     argument u: little endian array of 32 bytes
     returns little endian array of 32 bytes
 
-    S = ((B - k) * g.modpow(x, large_safe_prime).modpow(client_private_key + u * x, large_safe_prime)
+    S = ((server_public_key - k) * g.modpow(x, large_safe_prime)).modpow(client_private_key + u * x, large_safe_prime)
     return S
 </code></pre><h5 id="implementations-3">Implementations</h5>
 <ul>
@@ -651,19 +651,21 @@ The two hashes are then zipped together, with the even elements in the first pos
 <pre tabindex="0"><code>function split_s_key
     argument s_key: little endian array of 32 bytes
 
-    // if the _least_ significant byte is 0,
-    // remove the 2 least significant bytes
+    // While the _least_ significant byte is 0,
+    // remove the 2 least significant bytes.
     // Always keep the length even without
     // trailing zero elements
-    if s_key[0] == 0
-        // 
+    while s_key[0] == 0
+        // In the pseudo code the s_key variable is modified in place
+        // so the first iteration `s_key` has length 32, in the second
+        // it has length 30, and so on.
         return s_key[2..]
         
 
 function calculate_interleaved
     argument s_key: little endian array of 32 bytes
 
-    split_s_key = split_s_key
+    split_s_key = split_s_key(s_key)
 
     E = dynamic vector of bytes
     // Only add the even elements
@@ -684,7 +686,8 @@ function calculate_interleaved
     return session_key
 </code></pre><h5 id="implementations-6">Implementations</h5>
 <ul>
-<li><a href="https://github.com/gtker/wow_srp/blob/b72d2a396d0c9db5df3a6815e8ebf23230c157fe/src/srp_internal.rs#L166">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp/blob/6cfef1615cf412b6580608126922c7050ff3af8d/src/key.rs#L293">Rust (wow_srp) (<code>split_s_key</code>)</a></li>
+<li><a href="https://github.com/gtker/wow_srp/blob/6cfef1615cf412b6580608126922c7050ff3af8d/src/srp_internal.rs#L156">Rust (wow_srp)</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Util.cpp#L42">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L417">Elixir (Shadowburn)</a></li>
 </ul>
@@ -766,7 +769,7 @@ function calculate_interleaved
 <p><code>X</code> is the <code>XOR Hash</code>, described below. It requires the <strong>large safe prime</strong> and the <strong>generator</strong>. Can be precalculated if both are known.</p>
 </li>
 <li>
-<p><code>SHA1(U)</code> is a SHA-1 hash of the <strong>username</strong>.</p>
+<p><code>SHA1(U)</code> is a SHA-1 hash of the uppercased <strong>username</strong>.</p>
 </li>
 <li>
 <p><code>s</code> is the <strong>salt</strong>.</p>
@@ -795,10 +798,10 @@ function calculate_interleaved
     // | is array concatenation
     return SHA1( xor_hash 
                 | hashed_username 
-                | session_key 
+                | salt 
                 | client_public_key 
                 | server_public_key 
-                | salt )
+                | session_key )
 </code></pre><h5 id="implementations-8">Implementations</h5>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/b72d2a396d0c9db5df3a6815e8ebf23230c157fe/src/srp_internal.rs#L241">Rust (wow_srp)</a></li>
@@ -1106,7 +1109,7 @@ Individual images can be found at <a href="encryption/page-0.png">step 1</a>, <a
     return_array = {} // Unencrypted values
 
     for encrypted in data {
-        unencrypted = (encrypted - previous_encrypted) ^ session_key[index]
+        unencrypted = (encrypted - last_value) ^ session_key[index]
 
         index = (index + 1) % session_key.length // Use the session key as a circular buffer
 
