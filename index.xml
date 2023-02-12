@@ -1169,8 +1169,8 @@ Individual images can be found at <a href="encryption/page-0.png">step 1</a>, <a
 <p>Calculating the world proof in pseudo code would look like:</p>
 <pre tabindex="0"><code>function calculate_world_server_proof
     argument username: string
-    argument client_seed: unsigned 32 byte value, converted to little endian bytes
-    argument server_seed: unsigned 32 byte value, converted to little endian bytes
+    argument client_seed: unsigned 4 byte value, converted to little endian bytes
+    argument server_seed: unsigned 4 byte value, converted to little endian bytes
     argument session_key: little endian array of 40 bytes
     returns little endian array of 20 bytes
 
