@@ -1,4 +1,4 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Home on GTKer.com</title><link href="https://gtker.com/index.xml" rel="self"/><link href="https://gtker.com/"/><updated>2021-07-05T00:00:00+00:00</updated><id>https://gtker.com/</id><author><name>Gtker</name><email>contact@gtker.com</email></author><generator>Hugo -- gohugo.io</generator><entry><title type="html">Implementation Guide for the World of Warcraft flavor of SRP6</title><link href="https://gtker.com/implementation-guide-for-the-world-of-warcraft-flavor-of-srp6/"/><id>https://gtker.com/implementation-guide-for-the-world-of-warcraft-flavor-of-srp6/</id><author><name>Gtker</name></author><published>2021-07-05T00:00:00+00:00</published><updated>2023-02-11T00:00:00+00:00</updated><content type="html"><![CDATA[<p>The authentication protocol for authenticating with a World of Warcraft (WoW) server is widely available but not very well documented.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Home on GTKer.com</title><link href="https://gtker.com/index.xml" rel="self"/><link href="https://gtker.com/"/><updated>2021-07-05T00:00:00+00:00</updated><id>https://gtker.com/</id><author><name>Gtker</name><email>contact@gtker.com</email></author><generator>Hugo -- gohugo.io</generator><entry><title type="html">Implementation Guide for the World of Warcraft flavor of SRP6</title><link href="https://gtker.com/implementation-guide-for-the-world-of-warcraft-flavor-of-srp6/"/><id>https://gtker.com/implementation-guide-for-the-world-of-warcraft-flavor-of-srp6/</id><author><name>Gtker</name></author><published>2021-07-05T00:00:00+00:00</published><updated>2023-02-12T00:00:00+00:00</updated><content type="html"><![CDATA[<p>The authentication protocol for authenticating with a World of Warcraft (WoW) server is widely available but not very well documented.
 Most documentation is spread across forums or just directly links to <a href="https://tools.ietf.org/html/rfc2945">RFC2945</a>,
 the 8 page, 20 year old, very broad and unspecific RFC that describes SRP6 in relatively academic terms.</p>
 <p>The goal of this article is to be an approachable,
@@ -332,7 +332,7 @@ Test against the provided text files for every function to ensure that no mistak
 </li>
 </ul>
 <p>Calculating <code>x</code> in pseudo code would look like</p>
-<pre tabindex="0"><code>function caculate_x
+<pre tabindex="0"><code>function calculate_x
     argument username: string
     argument password: string
     argument salt: little endian array of 32 bytes
@@ -486,7 +486,7 @@ The calculation of the client and server <strong>S keys</strong> are below.</p>
     argument u: little endian array of 32 bytes
     returns little endian array of 32 bytes
 
-    S = ((server_public_key - k) * g.modpow(x, large_safe_prime)).modpow(client_private_key + u * x, large_safe_prime)
+    S = (server_public_key - (k * g.modpow(x, large_safe_prime))).modpow(client_private_key + u * x, large_safe_prime)
     return S
 </code></pre><h5 id="implementations-3">Implementations</h5>
 <ul>
@@ -659,10 +659,12 @@ The two hashes are then zipped together, with the even elements in the first pos
         // In the pseudo code the s_key variable is modified in place
         // so the first iteration `s_key` has length 32, in the second
         // it has length 30, and so on.
-        return s_key[2..]
+        s_key = s_key[2:]
+
+    return s_key
         
 
-function calculate_interleaved
+function SHA_Interleave
     argument s_key: little endian array of 32 bytes
 
     split_s_key = split_s_key(s_key)
