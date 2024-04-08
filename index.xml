@@ -426,8 +426,8 @@ It contains the columns:</li>
 </ul>
 <p>Calculating the <strong>server public key</strong> in pseudo code would look like:</p>
 <pre tabindex="0"><code>function calculate_server_public_key
-    argument password_verifier: little endian array of 32 bytes
-    argument server_private_key: little endian array of 32 bytes
+    argument password_verifier: BigInteger type
+    argument server_private_key: BigInteger type
     returns little endian array of 32 bytes
 
     // modpow is a power of and modulo operation in the same function
@@ -558,10 +558,10 @@ The calculation of the client and server <strong>S keys</strong> are below.</p>
 </ul>
 <p>Calculating the <strong>server S key</strong> in pseudo code would look like:</p>
 <pre tabindex="0"><code>function calculate_server_S_key
-    argument client_public_key: little endian array of 32 bytes
-    argument password_verifier: little endian array of 32 bytes
-    argument u: little endian array of 32 bytes
-    argument server_private_key: little endian array of 32 bytes
+    argument client_public_key: BigInteger type
+    argument password_verifier: BigInteger type
+    argument u: BigInteger type
+    argument server_private_key: BigInteger type
     returns little endian array of 32 bytes
 
     S = (client_public_key * password_verifier.modpow(u, large_safe_prime))
