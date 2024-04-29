@@ -1,8 +1,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Home on GTKer.com</title><link href="https://gtker.com/index.xml" rel="self"/><link href="https://gtker.com/"/><updated>2024-04-29T00:00:00+00:00</updated><id>https://gtker.com/</id><author><name>Gtker</name><email>contact@gtker.com</email></author><generator>Hugo -- gohugo.io</generator><entry><title type="html">Implementation Guide for the World of Warcraft PIN calculation</title><link href="https://gtker.com/implementation-guide-for-the-world-of-warcraft-pin-calculation/"/><id>https://gtker.com/implementation-guide-for-the-world-of-warcraft-pin-calculation/</id><author><name>Gtker</name></author><published>2024-04-29T00:00:00+00:00</published><updated>2024-04-29T00:00:00+00:00</updated><content type="html"><![CDATA[<p>Starting with client version 1.12 the user can enter a PIN which is hashed and sent to the server.
 This post details how the client calculates the hash for World of Warcraft 1.12 and provides replication values in order to test your own implementation.</p>
 <h1 id="background">Background</h1>
-<p>The server may send a PIN grid seed and PIN salt in <a href="https://wowdev.wiki/CMD_AUTH_LOGON_CHALLENGE_Server"><code>CMD_AUTH_LOGON_CHALLENGE_Server</code></a> if it chooses.
-The client may send the PIN salt and client PIN hash in <a href="https://wowdev.wiki/CMD_AUTH_LOGON_PROOF_Client"><code>CMD_AUTH_LOGON_PROOF</code></a> in the field just after the client proof.</p>
+<p>The server may send a PIN grid seed and PIN salt in <a href="https://wowdev.wiki/CMD_AUTH_LOGON_CHALLENGE_Server"><code>CMD_AUTH_LOGON_CHALLENGE_Server</code></a>
+ if it chooses.
+The client may send the PIN salt and client PIN hash in <a href="https://wowdev.wiki/CMD_AUTH_LOGON_PROOF_Client"><code>CMD_AUTH_LOGON_PROOF_Client</code></a>
+ in the field just after the client proof.</p>
 <p>Figure 1 shows the PIN window during login.</p>
 <figure>
     <img src="pin.png" alt="The PIN window shown during login after entering password."/>
@@ -1579,7 +1581,8 @@ Individual images can be found at <a href="encryption/page-0.png">step 1</a>, <a
 </tbody>
 </table>
 <h3 id="world-server-proof">World Server Proof</h3>
-<p>After receiving the <a href="https://wowdev.wiki/CMSG_AUTH_SESSION"><code>CMSG_AUTH_SESSION</code></a> message the server will have to verify that the client does indeed know the correct session key. This is done by having both the server and client use 32 bit (not byte) values as seeds in a hash with the session key.</p>
+<p>After receiving the <a href="https://wowdev.wiki/CMSG_AUTH_SESSION"><code>CMSG_AUTH_SESSION</code></a>
+ message the server will have to verify that the client does indeed know the correct session key. This is done by having both the server and client use 32 bit (not byte) values as seeds in a hash with the session key.</p>
 <p>The proof is calculated as <code>SHA1( username | 0 | client_seed | server_seed | session_key )</code>, where:</p>
 <ul>
 <li>
