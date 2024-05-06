@@ -723,7 +723,7 @@ This is likely to save on resources since it would be very unlikely for the file
 <li><a href="https://github.com/gtker/wow_srp/blob/119468a4896b42f7e1bc2ecdfeb790592dd173ea/src/integrity.rs#L120">Rust (wow_srp)</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/03c130d3d6276e7032fc9e13c9d287ea7c6ed536/src/login/LoginHandler.cpp#L370">C++ (Ember)</a></li>
 </ul>
-]]></content></entry><entry><title type="html">Implementation Guide for the World of Warcraft flavor of SRP6</title><link href="https://gtker.com/implementation-guide-for-the-world-of-warcraft-flavor-of-srp6/"/><id>https://gtker.com/implementation-guide-for-the-world-of-warcraft-flavor-of-srp6/</id><author><name>Gtker</name></author><published>2021-07-05T00:00:00+00:00</published><updated>2023-02-13T00:00:00+00:00</updated><content type="html"><![CDATA[<p>The authentication protocol for authenticating with a World of Warcraft (WoW) server is widely available but not very well documented.
+]]></content></entry><entry><title type="html">Implementation Guide for the World of Warcraft flavor of SRP6</title><link href="https://gtker.com/implementation-guide-for-the-world-of-warcraft-flavor-of-srp6/"/><id>https://gtker.com/implementation-guide-for-the-world-of-warcraft-flavor-of-srp6/</id><author><name>Gtker</name></author><published>2021-07-05T00:00:00+00:00</published><updated>2024-05-06T00:00:00+00:00</updated><content type="html"><![CDATA[<p>The authentication protocol for authenticating with a World of Warcraft (WoW) server is widely available but not very well documented.
 Most documentation is spread across forums or just directly links to <a href="https://tools.ietf.org/html/rfc2945">RFC2945</a>,
 the 8 page, 20 year old, very broad and unspecific RFC that describes SRP6 in relatively academic terms.</p>
 <p>The goal of this article is to be an approachable,
@@ -989,7 +989,7 @@ Not all terms have a long term, since some terms only exist as intermediate resu
 <p>This section describes how to implement the algorithm on a function-by-function basis.
 A completely functional program will only be possible once everything except for the Reconnect proof has been implemented.
 Test against the provided text files for every function to ensure that no mistakes occur.</p>
-<p>The <a href="https://github.com/gtker/wow_srp">wow_srp</a> Rust crate implements the full algorithm, with examples for both client and server located in the <a href="https://github.com/gtker/wow_srp/tree/main/examples">examples/</a> directory.
+<p>The <a href="https://github.com/gtker/wow_srp">wow_srp</a> Rust crate implements the full algorithm, with examples for both client and server located in the <a href="https://github.com/gtker/wow_messages/tree/main/examples">examples/</a> directory.
 <a href="https://github.com/EmberEmu/Ember/tree/development/src/libs/srp6">Ember</a> has a C++ version.
 <a href="https://gitlab.com/shadowburn/shadowburn/-/tree/master/apps/logind">Shadowburn</a> has an Elixir version.
 <a href="https://github.com/oiramario/wow_srp6">wow_srp6</a> is a Python version.</p>
