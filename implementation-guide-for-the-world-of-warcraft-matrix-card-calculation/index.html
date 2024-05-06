@@ -1,0 +1,111 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Implementation Guide for the World of Warcraft Matrix Card calculation | GTKer.com</title><style>body{font-family:Optima,Candara,Calibri,Arial,sans-serif}code{font-family:lucida console,Monaco,monospace;font-size:85%}</style><link rel=stylesheet href=https://gtker.com/sass/style.min.css><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest></head><body><nav><ul class=menu><li><a href=/>Home</a></li><li><a href=/about/>About</a></li><li><a href=/tags/>Tags</a></li><li><a href=/wow_messages/>wow_messages</a></li><li><a href=/index.xml>Atom/RSS</a></li></ul><hr></nav><div class=article-meta><h1><span class=title>Implementation Guide for the World of Warcraft Matrix Card calculation</span></h1><h2 class=date>2024-05-06</h2></div><p class=terms>Tags: <a href=/tags/rust>Rust</a> <a href=/tags/world-of-warcraft>World of Warcraft</a> <a href=/tags/wow>WoW</a> <a href=/tags/cryptography>Cryptography</a></p><nav id=TableOfContents><ul><li><a href=#generate-coordinates>Generate Coordinates</a><ul><li><a href=#implementations>Implementations</a></li><li><a href=#verification-values>Verification values</a></li></ul></li><li><a href=#create-new-objects>Create new objects</a><ul><li><a href=#implementations-1>Implementations</a></li><li><a href=#verification-values-1>Verification values</a></li></ul></li><li><a href=#get-coordinate>Get Coordinate</a><ul><li><a href=#implementations-2>Implementations</a></li><li><a href=#verification-values-2>Verification Values</a></li></ul></li><li><a href=#enter-digit>Enter Digit</a><ul><li><a href=#implementations-3>Implementations</a></li><li><a href=#verification-values-3>Verification Values</a></li></ul></li><li><a href=#create-proof>Create Proof</a><ul><li><a href=#implementations-4>Implementations</a></li><li><a href=#verification-values-4>Verification Values</a></li></ul></li><li><a href=#usage>Usage</a></li></ul></nav><main><p>World of Warcraft versions after <code>2.0.1.6180</code> supports using <strong>Matrix Cards</strong>/<strong>Grid Cards</strong> as multi factor authentication during login.
+<strong>Matrix Cards</strong> are a form of <a href=https://en.wikipedia.org/wiki/Pre-shared_key>Pre-shared Key</a> where the client is tested on partial elements of the shared key on every login.</p><p>This post details how the implementation works and how to use it.</p><h1 id=background>Background</h1><p><strong>Matrix Cards</strong> are a relatively niche form of two factor authentication where the client is tested on partial elements of a <a href=https://en.wikipedia.org/wiki/Pre-shared_key>Pre-shared Key</a>.
+The client is first given a <strong>Matrix Card</strong> in the form of either a document or a physical card akin to the one shown in figure 1.</p><figure><img src=wow-matrix-card.jpg alt="Matrix Card purported to be used on Chinese World of Warcraft clients."></img><figcaption><b>Figure 1:</b> Matrix Card purported to be used on Chinese World of Warcraft clients.<br></figure><p>The Chinese text in the top left means &ldquo;Serial Number:&rdquo;.
+This card is very unlikely to have been used with the Wrath of the Lich King or prior clients since it has a variable number of digits per field, which this algorithm does not support, however it can still be used to illustrate how the system works.</p><p>The server would ask the client which digits are in cell &ldquo;A6&rdquo; and the client would enter &ldquo;483&rdquo;.
+This would repeat for however many <strong>rounds</strong> the server has requested.
+The results are then hashed and the <strong>proof</strong> is sent by the client.
+The server makes the same calculations and compares the hashes.
+If they are identical the client knows the layout of the <strong>Matrix Card</strong>.</p><p>The server may send a <strong>width</strong>, <strong>height</strong>, <strong>digit count</strong>, <strong>challenge count</strong>, and <strong>seed</strong> in <a href=https://gtker.com/wow_messages/docs/cmd_auth_logon_challenge_server.html><code>CMD_AUTH_LOGON_CHALLENGE_Server</code></a>
+<span><sup><a href=https://wowdev.wiki/CMD_AUTH_LOGON_CHALLENGE_Server>wiki</a></sup></span>
+.
+The client may send the resulting <strong>proof</strong> in <a href=https://gtker.com/wow_messages/docs/cmd_auth_logon_proof_client.html><code>CMD_AUTH_LOGON_PROOF_Client</code></a>
+<span><sup><a href=https://wowdev.wiki/CMD_AUTH_LOGON_PROOF_Client>wiki</a></sup></span>
+.
+Real clients will always reply with a <strong>proof</strong> if the fields from the server message are present.</p><p>If the server also sends the fields required for <a href=../wow-pin>PIN authentication</a> the PIN prompt will be displayed first, followed by the <strong>Matrix Card</strong> prompt.</p><p>Figure 2 shows the complete login process in a 3.3.5 client with <strong>Matrix Card</strong> validation with a <strong>width</strong> of 10 and <strong>height</strong> of 20, <strong>digit count</strong> of 3, and <strong>challenge count</strong> of 2.</p><figure><video src=login.webm alt="Full login procedure with Matrix Card in 3.3.5 client." controls></video><figcaption><b>Figure 2:</b> Full login procedure with Matrix Card in 3.3.5 client.<br></figure><h1 id=implementation-details>Implementation details</h1><p>This section describes how to implement the algorithm on a function-by-function basis. A completelely functional program will only be possible when everything has been implemented.</p><p>The <a href=https://github.com/gtker/wow_srp/blob/main/src/matrix_card.rs>wow_srp Rust crate</a> implements the full algorithm.
+<a href=https://web.archive.org/web/20240505081723/https://gist.github.com/barncastle/979c12a9c5e64d810a28ad1728e7e0f9>This Github Gist by Barncastle</a> implements the full algorithm in C#.</p><p>The algorithm requires keeping the state of in progress <a href=https://en.wikipedia.org/wiki/RC4>RC4</a> and <a href=https://en.wikipedia.org/wiki/HMAC>HMAC-SHA1</a> objects alive while the algorithm is executed.</p><h2 id=generate-coordinates>Generate Coordinates</h2><p>The coordinates control which fields are checked.</p><ul><li><code>width</code> is the <strong>width</strong> sent by the server.</li><li><code>height</code> is the <strong>height</strong> sent by the server.</li><li><code>challenge_count</code> is the <strong>challenge count</strong>/<strong>rounds</strong> sent by the server.</li><li><code>seed</code> is the <strong>seed</strong> sent by the server.</li><li><code>%</code> is the modulus operator.</li></ul><p>Generating the coordinate array in pseudo code:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>function generate_coordinates
+</span></span><span style=display:flex><span>    argument width: u8
+</span></span><span style=display:flex><span>    argument height: u8
+</span></span><span style=display:flex><span>    argument challenge_count: u8
+</span></span><span style=display:flex><span>    argument seed: u64
+</span></span><span style=display:flex><span>    returns array of u32s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    # width, height, and challenge_count can not be 0
+</span></span><span style=display:flex><span>    # challenge_count must be greater than or equal to width * height
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    matrix_indices = array of (width * height) u32s that where the value is the same as the index
+</span></span><span style=display:flex><span>    # So if width * height was 4 the matrix_indices would be [0, 1, 2, 3]
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    coordinates = array of challenge_count u32s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    for i, coordinate in enumerate(coordinates):
+</span></span><span style=display:flex><span>            count = len(matrix_indices) - i;
+</span></span><span style=display:flex><span>        index = seed % count;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        coordinate = matrix_indices[index];
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        for j in index..(count - 1) {
+</span></span><span style=display:flex><span>            matrix_indices[j] = matrix_indices[j + 1];
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        seed /= count;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    return coordinates
+</span></span></code></pre></div><h3 id=implementations>Implementations</h3><ul><li><a href=https://github.com/gtker/wow_srp/blob/89926ba8c2eb68fe8b270907c05f0e5ce18b8089/src/matrix_card.rs#L441>Rust (wow_srp)</a></li><li><a href=https://gist.github.com/barncastle/979c12a9c5e64d810a28ad1728e7e0f9#file-wowmatrixcard-cs-L112>C# (Barncastle Gist)</a></li></ul><h3 id=verification-values>Verification values</h3><ul><li><a href=coordinates_regression.txt><code>coordinates_regression</code></a> contains the columns:</li></ul><table><thead><tr><th><code>width</code></th><th><code>height</code></th><th><code>challenge_count</code></th><th><code>seed</code></th><th><code>expected</code></th></tr></thead><tbody><tr><td>unsigned integer</td><td>unsigned integer</td><td>unsigned integer</td><td>unsigned integer</td><td><code>challenge_count</code> amount of space separated unsigned integers</td></tr></tbody></table><h2 id=create-new-objects>Create new objects</h2><p>This function creates the <code>coordinates</code>, <code>rc4</code>, and <code>hmac</code> objects required for further functions.</p><ul><li><code>width</code> is the <strong>width</strong> sent by the server.</li><li><code>height</code> is the <strong>height</strong> sent by the server.</li><li><code>challenge_count</code> is the <strong>challenge count</strong>/<strong>rounds</strong> sent by the server.</li><li><code>seed</code> is the <strong>seed</strong> sent by the server.</li><li><code>session_key</code> is the 40 byte session key created by the <a href=05-wow-srp>SRP6 algorithm</a>.</li><li><code>MD5</code> is the <a href=https://en.wikipedia.org/wiki/MD5>MD5 hash function</a>.</li><li><code>HMAC-SHA1</code> is the <a href=https://en.wikipedia.org/wiki/HMAC>HMAC-SHA1 function</a>.</li><li><code>RC4</code> is the <a href=https://en.wikipedia.org/wiki/RC4>RC4 function</a>.</li><li><code>+</code> is array concatenation</li></ul><p>Creating the objects in pseudo code:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>function create_new_objects
+</span></span><span style=display:flex><span>    argument width: u8
+</span></span><span style=display:flex><span>    argument height: u8
+</span></span><span style=display:flex><span>    argument challenge_count: u8
+</span></span><span style=display:flex><span>    argument seed: u64
+</span></span><span style=display:flex><span>    argument session_key: array of 40 bytes
+</span></span><span style=display:flex><span>    returns in-progress HMAC-SHA1, in-progress RC4, array of u32s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    coordinates = generate_coordinates(width, height, challenge_count, seed)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    md5 = MD5(seed as little endian array + session_key)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        rc4 = RC4(md5)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        hmac = HMAC-SHA1(md5)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        return hmac, rc4, coordinates
+</span></span></code></pre></div><h3 id=implementations-1>Implementations</h3><ul><li><a href=https://github.com/gtker/wow_srp/blob/89926ba8c2eb68fe8b270907c05f0e5ce18b8089/src/matrix_card.rs#L374>Rust (wow_srp)</a></li><li><a href=https://gist.github.com/barncastle/979c12a9c5e64d810a28ad1728e7e0f9#file-wowmatrixcard-cs-L20>C# (Barncastle Gist)</a></li></ul><h3 id=verification-values-1>Verification values</h3><p>There are no verification values for this function since the HMAC and RC4 ciphers aren&rsquo;t finished, and the coordinates are verified in <a href=#generate-coordinates>Generate Coordinates</a>.</p><h2 id=get-coordinate>Get Coordinate</h2><p>This function returns the <code>(x, y)</code> location on the pre shared key that should be entered using <a href=#enter-value>Enter Value</a>.</p><ul><li><code>width</code> is the <strong>width</strong> sent by the server.</li><li><code>height</code> is the <strong>height</strong> sent by the server.</li><li><code>challenge_count</code> is the <strong>challenge count</strong>/<strong>rounds</strong> sent by the server.</li><li><code>round</code> is the iteration number. So the first iteration would be 0, the second 1, and so on.</li><li><code>coordinates</code> is the array created by <a href=#generate-coordinates>Generate Coordinates</a>.</li></ul><p>Getting coordinates in pseudo code would look like:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>function get_coordinate
+</span></span><span style=display:flex><span>    argument challenge_count: u8
+</span></span><span style=display:flex><span>    argument coordinates: array of u32s
+</span></span><span style=display:flex><span>    argument width: u8
+</span></span><span style=display:flex><span>    argument height: u8
+</span></span><span style=display:flex><span>    argument round: u8
+</span></span><span style=display:flex><span>    returns u8, u8
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    # round can not be greater than challenge_count
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    coord = coordinates[round]
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    x = coord % width
+</span></span><span style=display:flex><span>        y = coord / width
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    # y can not be greater than or equal to height
+</span></span><span style=display:flex><span>    return x, y
+</span></span></code></pre></div><h3 id=implementations-2>Implementations</h3><ul><li><a href=https://github.com/gtker/wow_srp/blob/89926ba8c2eb68fe8b270907c05f0e5ce18b8089/src/matrix_card.rs#L407>Rust (wow_srp)</a></li><li><a href=https://gist.github.com/barncastle/979c12a9c5e64d810a28ad1728e7e0f9#file-wowmatrixcard-cs-L60>C# (Barncastle Gist)</a></li></ul><h3 id=verification-values-2>Verification Values</h3><ul><li><a href=get_coordinate_regression.txt><code>get_coordinate_regression</code></a> contains the columns:</li></ul><table><thead><tr><th><code>height</code></th><th><code>width</code></th><th><code>seed</code></th><th><code>challenge_count</code></th><th><code>session_key</code></th><th><code>expected</code></th></tr></thead><tbody><tr><td>unsigned integer</td><td>unsigned integer</td><td>unsigned integer</td><td>unsigned integer</td><td>Little endian array</td><td><code>challenge_count</code> pairs of <code>x</code> and <code>y</code> separated by space</td></tr></tbody></table><h2 id=enter-digit>Enter Digit</h2><p>Enters a single digit from a cell.
+Digits should be in the range <code>[0;9]</code> and should be entered one by one.
+Nothing needs to be done in between rounds.</p><p>Entering digits in pseudo code would look like:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>function enter_digit
+</span></span><span style=display:flex><span>    argument rc4: in progress RC4 object created by create_new_objects
+</span></span><span style=display:flex><span>    argument hmac: in progress HMAC-SHA1 object created by create_new_objects
+</span></span><span style=display:flex><span>    argument value: u8
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    new_value = rc4.apply(value)
+</span></span><span style=display:flex><span>    hmac.apply(new_value)
+</span></span></code></pre></div><h3 id=implementations-3>Implementations</h3><ul><li><a href=https://github.com/gtker/wow_srp/blob/89926ba8c2eb68fe8b270907c05f0e5ce18b8089/src/matrix_card.rs#L428>Rust (wow_srp)</a></li><li><a href=https://gist.github.com/barncastle/979c12a9c5e64d810a28ad1728e7e0f9#file-wowmatrixcard-cs-L80>C# (Barncastle Gist)</a></li></ul><h3 id=verification-values-3>Verification Values</h3><p>Since this function doesn&rsquo;t provide any output there are no verification values.
+Test this using <a href=#create-proof>Create Proof</a> instead.</p><h2 id=create-proof>Create Proof</h2><p>Finalizes the proof after digits have been entered.</p><p>In pseudo code it would look like:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>function create_proof
+</span></span><span style=display:flex><span>    argument hmac: in progress HMAC-SHA1 object created by create_new_objects
+</span></span><span style=display:flex><span>    returns array of 20 bytes
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    return hmac.finalize()
+</span></span></code></pre></div><h3 id=implementations-4>Implementations</h3><ul><li><a href=https://github.com/gtker/wow_srp/blob/89926ba8c2eb68fe8b270907c05f0e5ce18b8089/src/matrix_card.rs#L436>Rust (wow_srp)</a></li><li><a href=https://gist.github.com/barncastle/979c12a9c5e64d810a28ad1728e7e0f9#file-wowmatrixcard-cs-L94>C# (Barncastle Gist)</a></li></ul><h3 id=verification-values-4>Verification Values</h3><ul><li><a href=proof_regression.txt><code>proof_regression</code></a> contains the columns:</li></ul><table><thead><tr><th><code>height</code></th><th><code>width</code></th><th><code>seed</code></th><th><code>session_key</code></th><th><code>expected</code></th><th><code>challenge_count</code></th><th><code>challenges</code></th></tr></thead><tbody><tr><td>unsigned integer</td><td>unsigned integer</td><td>unsigned integer</td><td>Little endian array</td><td>Little endian array</td><td>unsigned integer</td><td><code>challenge_count</code> unsigned integers to be entered using <a href=#enter-digit>Enter Digit</a></td></tr></tbody></table><h2 id=usage>Usage</h2><p>Usage in pseudo code would look like:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>width = 26
+</span></span><span style=display:flex><span>height = 26
+</span></span><span style=display:flex><span>challenge_count = 2
+</span></span><span style=display:flex><span>digit_count = 3
+</span></span><span style=display:flex><span>seed = random()
+</span></span><span style=display:flex><span>session_key = a valid generated session key
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>hmac, rc4, coordinates = create_new_objects(width, height, challenge_count, seed, session_key)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>for round in 0..challenge_count:
+</span></span><span style=display:flex><span>    x, y = get_coordinate(challenge_count, coordinates, width, height, round)
+</span></span><span style=display:flex><span>    digits = use x and y to get the cell digits
+</span></span><span style=display:flex><span>    for digit in digits:
+</span></span><span style=display:flex><span>        value = enter_digit(rc4, hmac, digit)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>create_proof(hmac)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span># Send the proof to the server, or compare it with what the client sent
+</span></span></code></pre></div></main><footer><hr>© GTKer.com 2024 | <a href=mailto:contact@gtker.com>Contact</a></footer></body></html>
