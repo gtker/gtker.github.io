@@ -21,7 +21,9 @@ The client may send the PIN salt and client PIN hash in <a href="https://gtker.c
  in the field just after the client proof.</p>
 <p>Figure 1 shows the PIN window during login.</p>
 <figure>
-    <img src="pin.png" alt="The PIN window shown during login after entering password."/>
+    
+    <img src="pin.png" alt="The PIN window shown during login after entering password."></img>
+    
     <figcaption><b>Figure 1:</b> The PIN window shown during login after entering password.
         <br>
         
@@ -38,7 +40,9 @@ This will move the locations of the numbers so that they are no longer in order.
 So instead of the keypad being <code>1, 2, 3, ...</code>, it could be <code>9, 2, 5, ...</code>.
 Figure 2 shows the randomized PIN window.</p>
 <figure>
-    <img src="randomized-pin.png" alt="The randomized PIN window."/>
+    
+    <img src="randomized-pin.png" alt="The randomized PIN window."></img>
+    
     <figcaption><b>Figure 2:</b> The randomized PIN window.
         <br>
         
@@ -450,7 +454,9 @@ The server then sends a <strong>server proof</strong> to the client to prove tha
 </ol>
 <p>The above description can also be seen as a sequence diagram in figure 1.</p>
 <figure>
-    <img src="srp6-overview.svg" alt="A sequence diagram of the SRP6 process as previously described."/>
+    
+    <img src="srp6-overview.svg" alt="A sequence diagram of the SRP6 process as previously described."></img>
+    
     <figcaption><b>Figure 1:</b> A sequence diagram of the SRP6 process as previously described.
         <br>
         <a href="srp6-overview.wsd">PlantUML Source</a></figcaption>
@@ -1384,7 +1390,9 @@ See the verification values for the value.</p>
 </ol>
 <p>The above description can also be seen as a sequence diagram in figure 2.</p>
 <figure>
-    <img src="reconnect-overview.svg" alt="A sequence diagram of the reconnection process as previously described."/>
+    
+    <img src="reconnect-overview.svg" alt="A sequence diagram of the reconnection process as previously described."></img>
+    
     <figcaption><b>Figure 2:</b> A sequence diagram of the reconnection process as previously described.
         <br>
         <a href="reconnect-overview.wsd">PlantUML Source</a></figcaption>
@@ -1458,7 +1466,9 @@ None of the <a href="https://wowdev.wiki/Login_Packet">Login Packets</a> require
 <p>Figure 3 shows both encryption and decryption visually.
 Individual images can be found at <a href="encryption/page-0.png">step 1</a>, <a href="encryption/page-1.png">step 2</a>, <a href="encryption/page-2.png">step 3</a>, <a href="encryption/page-3.png">step 4</a> and <a href="encryption/page-4.png">step 5</a>.</p>
 <figure>
-    <img src="encryption/encryption.gif" alt="The encryption and decryption of example data. The figure is animated. Notice how decryption is just the same process in reverse."/>
+    
+    <img src="encryption/encryption.gif" alt="The encryption and decryption of example data. The figure is animated. Notice how decryption is just the same process in reverse."></img>
+    
     <figcaption><b>Figure 3:</b> The encryption and decryption of example data. The figure is animated. Notice how decryption is just the same process in reverse.
         <br>
         
@@ -1922,7 +1932,9 @@ Make sure that you&rsquo;re using the correct network for you, despite what the 
 <p>Log in to the Pihole Web Interface at <code>http://192.168.1.11/admin</code>.</p>
 <p>Go to &ldquo;Groups&rdquo; under &ldquo;Group Management&rdquo; in the left menu as seen in figure 1.
 <figure>
-    <img src="pihole/navigation-menu.png" alt="Navigation Menu on the left side of the Pihole Web Interface."/>
+    
+    <img src="pihole/navigation-menu.png" alt="Navigation Menu on the left side of the Pihole Web Interface."></img>
+    
     <figcaption><b>Figure 1:</b> Navigation Menu on the left side of the Pihole Web Interface.
         <br>
         
@@ -1930,7 +1942,9 @@ Make sure that you&rsquo;re using the correct network for you, despite what the 
 </p>
 <p>Add a new group called &ldquo;TV&rdquo; and put any comments in the &ldquo;Description&rdquo; field as seen in figure 2.</p>
 <figure>
-    <img src="pihole/new-group.png" alt="Adding a new group named &#39;TV&#39;. Only &#39;Name&#39; is relevant, &#39;Description&#39; is only documentation."/>
+    
+    <img src="pihole/new-group.png" alt="Adding a new group named &#39;TV&#39;. Only &#39;Name&#39; is relevant, &#39;Description&#39; is only documentation."></img>
+    
     <figcaption><b>Figure 2:</b> Adding a new group named &#39;TV&#39;. Only &#39;Name&#39; is relevant, &#39;Description&#39; is only documentation.
         <br>
         
@@ -1941,7 +1955,9 @@ Make sure that you&rsquo;re using the correct network for you, despite what the 
 It is recommended to identify the address in some way, even if it&rsquo;s just &ldquo;TV&rdquo;, since few people can correctly remember the IP-addresses of every device on their LAN.
 If the address of the TV is not found in the dropdown you can manually insert it using the &ldquo;Custom, specified below&rdquo; option.</p>
 <figure>
-    <img src="pihole/add-new-client.png" alt="Adding a new client by using the &#39;Custom, specified below...&#39; option and manually inputting the address."/>
+    
+    <img src="pihole/add-new-client.png" alt="Adding a new client by using the &#39;Custom, specified below...&#39; option and manually inputting the address."></img>
+    
     <figcaption><b>Figure 3:</b> Adding a new client by using the &#39;Custom, specified below...&#39; option and manually inputting the address.
         <br>
         
@@ -1949,7 +1965,9 @@ If the address of the TV is not found in the dropdown you can manually insert it
 
 <p>Assign the new client to the group made in figure 2 and remove it from the &ldquo;Default&rdquo; group as seen in figure 4.</p>
 <figure>
-    <img src="pihole/client-to-group.png" alt="Adding a new client to the &#39;TV&#39; group and removing it from the &#39;Default&#39; group."/>
+    
+    <img src="pihole/client-to-group.png" alt="Adding a new client to the &#39;TV&#39; group and removing it from the &#39;Default&#39; group."></img>
+    
     <figcaption><b>Figure 4:</b> Adding a new client to the &#39;TV&#39; group and removing it from the &#39;Default&#39; group.
         <br>
         
@@ -1960,7 +1978,9 @@ If the address of the TV is not found in the dropdown you can manually insert it
 Remember to check the &ldquo;Add domain as wildcard.
 This will block all domains.</p>
 <figure>
-    <img src="pihole/block-all-domains.png" alt="Adding the regular expression &#39;[a-z]*|[0-9]*|\.&#39; to &#39;Domain&#39; in order to block all domains. Make sure to check &#39;Add domain as wildcard&#39;. The &#39;Add to Blacklist&#39; button is found just below this."/>
+    
+    <img src="pihole/block-all-domains.png" alt="Adding the regular expression &#39;[a-z]*|[0-9]*|\.&#39; to &#39;Domain&#39; in order to block all domains. Make sure to check &#39;Add domain as wildcard&#39;. The &#39;Add to Blacklist&#39; button is found just below this."></img>
+    
     <figcaption><b>Figure 5:</b> Adding the regular expression &#39;[a-z]*|[0-9]*|\.&#39; to &#39;Domain&#39; in order to block all domains. Make sure to check &#39;Add domain as wildcard&#39;. The &#39;Add to Blacklist&#39; button is found just below this.
         <br>
         
@@ -1970,7 +1990,9 @@ This will block all domains.</p>
 <p>Ensure that the <code>[a-z]*|[0-9]*|\.</code> filter you just added is a &ldquo;Regex blacklist&rdquo;, &ldquo;Enabled&rdquo; and applied only to the group you created in figure 2.
 It <strong>must</strong> not be applied to the &ldquo;Default&rdquo; group, otherwise all domains will be blocked on all devices.</p>
 <figure>
-    <img src="pihole/apply-all-to-tv.png" alt="List of blocklists on the Pihole. Ensure that the recently added filter is listed as &#39;Regex  blacklist&#39;, &#39;Enabled&#39; and in the &#39;TV&#39; group but not in the &#39;Default&#39; group."/>
+    
+    <img src="pihole/apply-all-to-tv.png" alt="List of blocklists on the Pihole. Ensure that the recently added filter is listed as &#39;Regex  blacklist&#39;, &#39;Enabled&#39; and in the &#39;TV&#39; group but not in the &#39;Default&#39; group."></img>
+    
     <figcaption><b>Figure 6:</b> List of blocklists on the Pihole. Ensure that the recently added filter is listed as &#39;Regex  blacklist&#39;, &#39;Enabled&#39; and in the &#39;TV&#39; group but not in the &#39;Default&#39; group.
         <br>
         
@@ -1987,7 +2009,9 @@ The exact domain depends on the service you&rsquo;re trying to allow.
 If you&rsquo;re in doubt, do a search for the domain in question and read up on what it does.
 It might be necessary to do this over several iterations, as services on the TV might require different domains at several points.</p>
 <figure>
-    <img src="pihole/approve-domains.png" alt="Approving domains for the TV. The search has been used to narrow the list to only the TV. Domains can be allowed with the &#39;Whitelist&#39; button on the right. A records are IPv4 and AAAA records are IPv6."/>
+    
+    <img src="pihole/approve-domains.png" alt="Approving domains for the TV. The search has been used to narrow the list to only the TV. Domains can be allowed with the &#39;Whitelist&#39; button on the right. A records are IPv4 and AAAA records are IPv6."></img>
+    
     <figcaption><b>Figure 7:</b> Approving domains for the TV. The search has been used to narrow the list to only the TV. Domains can be allowed with the &#39;Whitelist&#39; button on the right. A records are IPv4 and AAAA records are IPv6.
         <br>
         
@@ -1997,7 +2021,9 @@ It might be necessary to do this over several iterations, as services on the TV 
 <p>If your TV does not use the DHCP DNS by default, you should set up DNS redirection on a firewall or router.</p>
 <p>Log into the web interface of your Edgerouter X and click the &ldquo;Firewall/NAT&rdquo; tab as shown in figure 8.</p>
 <figure>
-    <img src="edgerouterx/firewall.png" alt="Firewall/NAT tab on the Edgerouter X."/>
+    
+    <img src="edgerouterx/firewall.png" alt="Firewall/NAT tab on the Edgerouter X."></img>
+    
     <figcaption><b>Figure 8:</b> Firewall/NAT tab on the Edgerouter X.
         <br>
         
@@ -2005,7 +2031,9 @@ It might be necessary to do this over several iterations, as services on the TV 
 
 <p>Next, click the &ldquo;NAT&rdquo; tab as shown in figure 9.</p>
 <figure>
-    <img src="edgerouterx/nat.png" alt="NAT tab in the Firewall/NAT tab."/>
+    
+    <img src="edgerouterx/nat.png" alt="NAT tab in the Firewall/NAT tab."></img>
+    
     <figcaption><b>Figure 9:</b> NAT tab in the Firewall/NAT tab.
         <br>
         
@@ -2013,7 +2041,9 @@ It might be necessary to do this over several iterations, as services on the TV 
 
 <p>Click the &ldquo;Add Source NAT Rule&rdquo; button as shown in figure 10.</p>
 <figure>
-    <img src="edgerouterx/add-source-nat.png" alt="Adding new source rule."/>
+    
+    <img src="edgerouterx/add-source-nat.png" alt="Adding new source rule."></img>
+    
     <figcaption><b>Figure 10:</b> Adding new source rule.
         <br>
         
@@ -2029,7 +2059,9 @@ It might be necessary to do this over several iterations, as services on the TV 
 <li><strong>Dest Port:</strong> Set to <code>53</code>.</li>
 </ol>
 <figure>
-    <img src="edgerouterx/source-nat-settings.png" alt="Screen for creating new source NAT rules."/>
+    
+    <img src="edgerouterx/source-nat-settings.png" alt="Screen for creating new source NAT rules."></img>
+    
     <figcaption><b>Figure 11:</b> Screen for creating new source NAT rules.
         <br>
         
@@ -2048,7 +2080,9 @@ It might be necessary to do this over several iterations, as services on the TV 
 <li><strong>Dest Port:</strong> Set to 53.</li>
 </ol>
 <figure>
-    <img src="edgerouterx/destination-nat-settings.png" alt="Screen for creating new source NAT rules."/>
+    
+    <img src="edgerouterx/destination-nat-settings.png" alt="Screen for creating new source NAT rules."></img>
+    
     <figcaption><b>Figure 12:</b> Screen for creating new source NAT rules.
         <br>
         
