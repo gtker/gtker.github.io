@@ -1455,8 +1455,8 @@ function SHA_Interleave
 </thead>
 <tbody>
 <tr>
-<td>Little Endian Hex</td>
-<td>Little Endian Hex</td>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
 </tr>
 </tbody>
 </table>
