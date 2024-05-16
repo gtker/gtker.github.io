@@ -1988,9 +1988,9 @@ Individual images can be found at <a href="encryption/page-0.png">step 1</a>, <a
 <tr>
 <td>String</td>
 <td>Big Endian Hex</td>
-<td>Little Endian Hex</td>
-<td>Little Endian Hex</td>
-<td>Little Endian Hex</td>
+<td>Number</td>
+<td>Number</td>
+<td>Big Endian Hex</td>
 </tr>
 </tbody>
 </table>
