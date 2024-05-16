@@ -1770,9 +1770,9 @@ The <strong>reconnect proof</strong> is calculated as <code>SHA1( username | cli
 <tbody>
 <tr>
 <td>String</td>
-<td>Little Endian Hex</td>
-<td>Little Endian Hex</td>
-<td>Little Endian Hex</td>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
 </tr>
 </tbody>
 </table>
