@@ -1526,7 +1526,7 @@ function SHA_Interleave
 <tr>
 <td>Big Endian Hex</td>
 <td>Big Endian Hex</td>
-<td>Little Endian Hex</td>
+<td>Big Endian Hex</td>
 <td>Big Endian Hex</td>
 </tr>
 </tbody>
