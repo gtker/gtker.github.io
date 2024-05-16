@@ -1398,6 +1398,7 @@ The two hashes are then zipped together, with the even elements in the first pos
 <p>The <code>SHA_Interleave()</code> function in pseudo code would look like:</p>
 <pre tabindex="0"><code>function split_s_key
     argument s_key: little endian array of 32 bytes
+    returns little endian array of 32 bytes or fewer
 
     // While the _least_ significant byte is 0,
     // remove the 2 least significant bytes.
@@ -1414,6 +1415,7 @@ The two hashes are then zipped together, with the even elements in the first pos
 
 function SHA_Interleave
     argument s_key: little endian array of 32 bytes
+    returns array of 40 bytes
 
     split_s_key = split_s_key(s_key)
 
