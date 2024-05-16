@@ -1460,6 +1460,23 @@ function SHA_Interleave
 </tr>
 </tbody>
 </table>
+<ul>
+<li><a href="verification_values/calculate_split_s_key.txt">calculate_split_s_key.txt</a> contains the columns:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>S Key</th>
+<th>Expected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
+</tr>
+</tbody>
+</table>
 <h3 id="server-proof">Server proof</h3>
 <p>The <strong>server proof</strong>, <code>M2</code> or sometimes just <code>M</code>, is calculated as <code>M2 = SHA1(A | M1 | K)</code>, where:</p>
 <ul>
