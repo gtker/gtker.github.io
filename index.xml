@@ -906,7 +906,13 @@ The <strong>large safe prime</strong> can be expressed as a <strong>little endia
 </span></span><span style="display:flex;"><span>];
 </span></span></code></pre></div><p>The <strong>generator</strong> should always be <code>7</code>.</p>
 <p>The <strong>k</strong> value should always be <code>3</code>.</p>
-<h3 id="aliases">Aliases</h3>
+<p>The <strong>XOR Hash</strong> with these values will always be <code>0xA7C27B6C96CA6F505A7C98031173AC383AB07BDD</code> (big endian string).
+The <strong>XOR Hash</strong> can be expressed as a <strong>little endian</strong> Rust array like</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> PRECALCULATED_XOR_HASH: [<span style="color:#66d9ef">u8</span>; <span style="color:#ae81ff">20</span>] <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0xdd</span>, <span style="color:#ae81ff">0x7b</span>, <span style="color:#ae81ff">0xb0</span>, <span style="color:#ae81ff">0x3a</span>, <span style="color:#ae81ff">0x38</span>, <span style="color:#ae81ff">0xac</span>, <span style="color:#ae81ff">0x73</span>, <span style="color:#ae81ff">0x11</span>, <span style="color:#ae81ff">0x3</span>, <span style="color:#ae81ff">0x98</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0x7c</span>, <span style="color:#ae81ff">0x5a</span>, <span style="color:#ae81ff">0x50</span>, <span style="color:#ae81ff">0x6f</span>, <span style="color:#ae81ff">0xca</span>, <span style="color:#ae81ff">0x96</span>, <span style="color:#ae81ff">0x6c</span>, <span style="color:#ae81ff">0x7b</span>, <span style="color:#ae81ff">0xc2</span>, <span style="color:#ae81ff">0xa7</span>,
+</span></span><span style="display:flex;"><span>];
+</span></span></code></pre></div><h3 id="aliases">Aliases</h3>
 <p>Previously terms like <strong>client public key</strong> and <strong>large safe prime</strong> have been used instead of the single letters <code>A</code> and <code>N</code> which are used in <a href="https://tools.ietf.org/html/rfc2945">RFC2945</a>.</p>
 <p>The one letter abbreviations are in my opinion difficult to remember and internalize unless you already know what they mean beforehand.
 The long forms will therefore be used, and the table below will serve as a translation between the long and short forms.
