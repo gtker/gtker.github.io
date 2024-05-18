@@ -18,7 +18,26 @@ without saying what the key is.</li><li>The <strong>client proof</strong> and <s
 client calculates a <strong>client proof</strong>, then the server calculates a <strong>client proof</strong> using the same algorithm and if the <strong>client proofs</strong> match the <strong>session keys</strong> used are identical.
 The same happens for the <strong>server proofs</strong>.</li></ol><p><a href=#reconnecting>Reconnecting</a> and <a href=#world-packet-header-encryption>packet header encryption</a> are described in their own sections.</p><h2 id=important-knowledge-before-starting>Important Knowledge Before Starting</h2><p>Before we dive into the implementation itself, there are a few things you should know that would
 ease your implementation.</p><h3 id=integers>Integers</h3><p>You will need to convert an array of bytes to a number, this is often called a <code>BigInt</code>, <code>BigInteger</code> or arbitrary size integer.
-You might need a third party library for this although some languages do have standard library support for this.</p><p>The integers should be <strong>signed and positive</strong>.</p><h4 id=convertion-of-hexadecimal-strings-to-byte-arrays>Convertion of hexadecimal strings to byte arrays</h4><p>When using the provided examples you will need to convert a hexadecimal string to arrays of bytes.
+You might need a third party library for this although some languages do have standard library support for this.</p><p>The integers should be <strong>signed and positive</strong>.</p><h4 id=modulo-vs-remainder>Modulo vs Remainder</h4><p>It&rsquo;s important that your <code>BigInteger</code> implementation uses modulo rather than the remainder for <code>mod_pow</code>.
+With remainder, <code>(-2)^3 % 9 = -8</code> while with modulo <code>(-2)^3 % 9 = 1</code>.
+Test your <code>BigInteger</code> implementation and if it uses remainder, add the <strong>large safe prime</strong> to the result to get the correct result.
+For example:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>large_safe_prime <span style=color:#f92672>=</span> <span style=color:#ae81ff>9</span>
+</span></span><span style=display:flex><span>a <span style=color:#f92672>=</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>b <span style=color:#f92672>=</span> <span style=color:#ae81ff>3</span>
+</span></span><span style=display:flex><span>result <span style=color:#f92672>=</span> a<span style=color:#f92672>.</span>mod_pow(b, large_safe_prime)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># if result == 1 you don&#39;t need to do anything else</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># if result == -8 you need to create a wrapper around your mod_pow like so:</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>real_mod_pow</span>(a, b, large_safe_prime):
+</span></span><span style=display:flex><span>    c <span style=color:#f92672>=</span> a<span style=color:#f92672>.</span>mod_pow(b, large_safe_prime)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> c <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>:
+</span></span><span style=display:flex><span>        c <span style=color:#f92672>+=</span> large_safe_prime
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> c
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>result <span style=color:#f92672>=</span> real_mod_pow(a, b, large_safe_prime)
+</span></span><span style=display:flex><span><span style=color:#75715e># result is now 1</span>
+</span></span></code></pre></div><h4 id=convertion-of-hexadecimal-strings-to-byte-arrays>Convertion of hexadecimal strings to byte arrays</h4><p>When using the provided examples you will need to convert a hexadecimal string to arrays of bytes.
 It&rsquo;s important to understand the difference between a byte array of a hexadecimal integer, and a byte array of a string.</p><p>Hexadecimal strings can be thought of as containing a byte every 2 characters.
 So the string <code>FF</code> would be an array with a single element containing the value <code>255</code> (<code>0xFF</code>), while the string <code>FFEE</code> would be an array with two elements containg the value <code>255</code> (<code>0xFF</code>) and the value <code>238</code> (<code>0xEE</code>).</p><p>A byte array of a string are the literal values that represent the characters in the string, while a byte of array of an integer are the individual components of the integer.
 So the byte array of the hexadecimal string <code>FF</code> would contain two elements with the value <code>70</code> (0x46) and the value <code>70</code>, since these are the ASCII/UTF-8 values of the <code>F</code> character.</p><p>Consider two the functions <code>HexToBytes</code> and <code>StringToBytes</code>.
