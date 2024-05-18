@@ -1265,6 +1265,7 @@ The calculation of the client and server <strong>S keys</strong> are below.</p>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L66">Python (wow_srp6)</a></li>
 </ul>
 <h5 id="verification-values-3">Verification values</h5>
+<p>If you&rsquo;re getting an error on the 6th line of this file, your <code>BigInteger</code> implementation is likely using <a href="#integers">remainder instead of modulo</a>.</p>
 <ul>
 <li><a href="verification_values/calculate_client_S_values.txt">calculate_client_S_values.txt</a> expects a static <strong>generator</strong> and <strong>large safe prime</strong> from <a href="#constants">Constants</a>, and contains the columns:</li>
 </ul>
