@@ -1507,6 +1507,115 @@ function SHA_Interleave
 </tr>
 </tbody>
 </table>
+<h4 id="server-session-key">Server Session Key</h4>
+<p>The server session key combines all the previous functions:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>function calculate_server_session_key:
+</span></span><span style="display:flex;"><span>    argument client_public_key: array of 32 bytes
+</span></span><span style="display:flex;"><span>    argument server_public_key: array of 32 bytes
+</span></span><span style="display:flex;"><span>    argument password_verifier: array of 32 bytes
+</span></span><span style="display:flex;"><span>    argument server_private_key: array of 32 bytes
+</span></span><span style="display:flex;"><span>    returns array of 40 bytes
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    u = calculate_u(client_public_key, server_public_key)
+</span></span><span style="display:flex;"><span>    S = calculate_S(client_public_key, password_verifier, u, server_private_key)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    return calculate_interleaved(S)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h5 id="implementations-7">Implementations</h5>
+<ul>
+<li><a href="https://github.com/gtker/wow_srp/blob/8e632f27c3b3850f77a9b9e5e732b295b0dadeb9/src/srp_internal.rs#L182">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/EmberEmu/Ember/blob/9da97165902c36b976a27764af028195da93c60a/src/libs/srp6/src/Server.cpp#L32">C++ (Ember)</a></li>
+<li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L391">Elixir (Shadowburn)</a></li>
+<li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L440">Python (wow_srp6)</a></li>
+</ul>
+<h5 id="verification-values-7">Verification values</h5>
+<p>You will need to calculate the <strong>server public key</strong> using the supplied <strong>password verifier</strong> and <strong>server private key</strong> in order to test this.</p>
+<ul>
+<li><a href="verification_values/calculate_server_session_key.txt">calculate_server_session_key.txt</a> contains the columns:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Client Public Key</th>
+<th>Password Verifier</th>
+<th>Server Private Key</th>
+<th>Expected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
+</tr>
+</tbody>
+</table>
+<h4 id="client-session-key">Client Session Key</h4>
+<p>The client session key combines all the previous functions:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>function calculate_client_session_key:
+</span></span><span style="display:flex;"><span>    argument username: string
+</span></span><span style="display:flex;"><span>    argument password: string
+</span></span><span style="display:flex;"><span>    argument server_public_key: array of 32 bytes
+</span></span><span style="display:flex;"><span>    argument client_private_key: array of 32 bytes
+</span></span><span style="display:flex;"><span>    argument generator: unsigned integer
+</span></span><span style="display:flex;"><span>    argument large_safe_prime: array of 32 bytes
+</span></span><span style="display:flex;"><span>    argument client_public_key: array of 32 bytes
+</span></span><span style="display:flex;"><span>    argument salt: array of 32 bytes
+</span></span><span style="display:flex;"><span>    returns array of 40 bytes
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    x = calculate_x(username, password, salt)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    u = calculate_u(client_public_key, server_public_key)
+</span></span><span style="display:flex;"><span>    S = calculate_client_S(
+</span></span><span style="display:flex;"><span>        server_public_key,
+</span></span><span style="display:flex;"><span>        x,
+</span></span><span style="display:flex;"><span>        client_private_key,
+</span></span><span style="display:flex;"><span>        u,
+</span></span><span style="display:flex;"><span>        generator,
+</span></span><span style="display:flex;"><span>        large_safe_prime,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    return calculate_interleaved(S)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h5 id="implementations-8">Implementations</h5>
+<ul>
+<li><a href="https://github.com/gtker/wow_srp/blob/8e632f27c3b3850f77a9b9e5e732b295b0dadeb9/src/srp_internal_client.rs#L23">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/EmberEmu/Ember/blob/9da97165902c36b976a27764af028195da93c60a/src/libs/srp6/src/Client.cpp#L38">C++ (Ember)</a></li>
+<li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L425">Python (wow_srp6)</a></li>
+</ul>
+<h5 id="verification-values-8">Verification values</h5>
+<ul>
+<li><a href="verification_values/calculate_client_session_key.txt">calculate_client_session_key.txt</a> contains the columns:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Username</th>
+<th>Password</th>
+<th>Server Public Key</th>
+<th>Client Private Key</th>
+<th>Generator</th>
+<th>Large Safe Prime</th>
+<th>Client Public Key</th>
+<th>Salt</th>
+<th>Expected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>String</td>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
+<td>Integer</td>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
+</tr>
+</tbody>
+</table>
 <h3 id="server-proof">Server proof</h3>
 <p>The <strong>server proof</strong>, <code>M2</code> or sometimes just <code>M</code>, is calculated as <code>M2 = SHA1(A | M1 | K)</code>, where:</p>
 <ul>
@@ -1532,14 +1641,14 @@ function SHA_Interleave
 
     // Array concatenation
     return SHA1(client_public_key + client_proof + session_key)
-</code></pre><h5 id="implementations-7">Implementations</h5>
+</code></pre><h5 id="implementations-9">Implementations</h5>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/b72d2a396d0c9db5df3a6815e8ebf23230c157fe/src/srp_internal.rs#L211">Rust (wow_srp)</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Server.cpp#L57">C++ (Ember)</a> calls into <a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Util.cpp#L169">here</a>.</li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L413">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L124">Python (wow_srp6)</a></li>
 </ul>
-<h5 id="verification-values-7">Verification values</h5>
+<h5 id="verification-values-9">Verification values</h5>
 <ul>
 <li><a href="verification_values/calculate_M2_values.txt">calculate_M2_values.txt</a> contains the columns:</li>
 </ul>
@@ -1601,14 +1710,14 @@ function SHA_Interleave
                 | client_public_key 
                 | server_public_key 
                 | session_key )
-</code></pre><h5 id="implementations-8">Implementations</h5>
+</code></pre><h5 id="implementations-10">Implementations</h5>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/b72d2a396d0c9db5df3a6815e8ebf23230c157fe/src/srp_internal.rs#L241">Rust (wow_srp)</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Util.cpp#L134">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L403">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L147">Python (wow_srp6)</a></li>
 </ul>
-<h5 id="verification-values-8">Verification values</h5>
+<h5 id="verification-values-10">Verification values</h5>
 <ul>
 <li><a href="verification_values/calculate_M1_values.txt">calculate_M1_values.txt</a> contains the columns:</li>
 </ul>
@@ -1664,14 +1773,14 @@ See the verification values for the value.</p>
     end for
 
     return result
-</code></pre><h5 id="implementations-9">Implementations</h5>
+</code></pre><h5 id="implementations-11">Implementations</h5>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/b72d2a396d0c9db5df3a6815e8ebf23230c157fe/src/srp_internal.rs#L225">Rust (wow_srp)</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Util.cpp#L142">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L401">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L132">Python (wow_srp6)</a></li>
 </ul>
-<h5 id="verification-values-9">Verification values</h5>
+<h5 id="verification-values-11">Verification values</h5>
 <ul>
 <li><a href="verification_values/calculate_xor_hash.txt">calculate_xor_hash.txt</a> contains the columns:</li>
 </ul>
@@ -1717,13 +1826,13 @@ See the verification values for the value.</p>
 
     // modpow is a power of and modulo operation in the same function
     return generator.modpow(client_private_key, large_safe_prime)
-</code></pre><h5 id="implementations-10">Implementations</h5>
+</code></pre><h5 id="implementations-12">Implementations</h5>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/b72d2a396d0c9db5df3a6815e8ebf23230c157fe/src/srp_internal_client.rs#L9">Rust (wow_srp)</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Client.cpp#L30">C++ (Ember)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L156">Python (wow_srp6)</a></li>
 </ul>
-<h5 id="verification-values-10">Verification values</h5>
+<h5 id="verification-values-12">Verification values</h5>
 <ul>
 <li><a href="verification_values/calculate_A_values.txt">calculate_A_values.txt</a> expects a static <strong>generator</strong> and <strong>large safe prime</strong> as defined under <a href="#constants">Constants</a>. It contains the columns:</li>
 </ul>
@@ -1791,14 +1900,14 @@ The <strong>reconnect proof</strong> is calculated as <code>SHA1( username | cli
     returns little endian array of 20 bytes
 
     return SHA1(username + client_data + server_data + session_key)
-</code></pre><h4 id="implementations-11">Implementations</h4>
+</code></pre><h4 id="implementations-13">Implementations</h4>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/b72d2a396d0c9db5df3a6815e8ebf23230c157fe/src/srp_internal.rs#L263">Rust (wow_srp)</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/90b9a7b43df4744f856e81e3efcf1de92bcb4ebf/src/login/Authenticator.cpp#L59">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L435">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L166">Python (wow_srp6)</a></li>
 </ul>
-<h4 id="verification-values-11">Verification values</h4>
+<h4 id="verification-values-13">Verification values</h4>
 <ul>
 <li><a href="verification_values/calculate_reconnection_values.txt">calculate_reconnection_values.txt</a> contains the columns:</li>
 </ul>
@@ -1877,14 +1986,14 @@ Individual images can be found at <a href="encryption/page-0.png">step 1</a>, <a
     }
 
     return return_array
-</code></pre><h4 id="implementations-12">Implementations</h4>
+</code></pre><h4 id="implementations-14">Implementations</h4>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/bc10da51a44b368b64fe5491dc305287bb431e74/src/header_crypto/mod.rs#L106">Rust (wow_srp)</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/90b9a7b43df4744f856e81e3efcf1de92bcb4ebf/src/gateway/PacketCrypto.h#L44">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/serverd/lib/session.ex#L56">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L173">Python (wow_srp6)</a></li>
 </ul>
-<h4 id="verification-values-12">Verification values</h4>
+<h4 id="verification-values-14">Verification values</h4>
 <ul>
 <li><a href="verification_values/encryption/calculate_encrypt_values.txt">calculate_encrypt_values.txt</a> contains the columns:</li>
 </ul>
@@ -1942,14 +2051,14 @@ Individual images can be found at <a href="encryption/page-0.png">step 1</a>, <a
     }
 
     return return_array
-</code></pre><h4 id="implementations-13">Implementations</h4>
+</code></pre><h4 id="implementations-15">Implementations</h4>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/bc10da51a44b368b64fe5491dc305287bb431e74/src/header_crypto/mod.rs#L166">Rust (wow_srp)</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/90b9a7b43df4744f856e81e3efcf1de92bcb4ebf/src/gateway/PacketCrypto.h#L58">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/serverd/lib/session.ex#L73">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L191">Python (wow_srp6)</a></li>
 </ul>
-<h4 id="verification-values-13">Verification values</h4>
+<h4 id="verification-values-15">Verification values</h4>
 <ul>
 <li><a href="verification_values/encryption/calculate_decrypt_values.txt">calculate_decrypt_values.txt</a> contains the columns:</li>
 </ul>
@@ -2008,7 +2117,7 @@ Individual images can be found at <a href="encryption/page-0.png">step 1</a>, <a
     zero = [0, 0, 0, 0] // Assume this is a 4 byte array of zeros
 
     return SHA1(username + zero + client_seed + server_seed + session_key)
-</code></pre><h4 id="implementations-14">Implementations</h4>
+</code></pre><h4 id="implementations-16">Implementations</h4>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/761b040d9d7f18dcb760424eeaef15994f321116/src/srp_internal.rs#L260">Rust (wow_srp)</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/b0dbeb3dc4230a18c7be38c2cedd712ef6e3cfd4/src/gateway/states/Authentication.cpp#L166">C++ (Ember)</a></li>
@@ -2016,7 +2125,7 @@ Individual images can be found at <a href="encryption/page-0.png">step 1</a>, <a
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/serverd/lib/session.ex#L127">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L209">Python (wow_srp6)</a></li>
 </ul>
-<h4 id="verification-values-14">Verification values</h4>
+<h4 id="verification-values-16">Verification values</h4>
 <ul>
 <li><a href="verification_values/encryption/calculate_world_server_proof.txt">calculate_world_server_proof.txt</a> contains the columns:</li>
 </ul>
