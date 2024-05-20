@@ -689,7 +689,6 @@ The algorithm is the same as the platform specific versions, but all the checked
 This is likely to save on resources since it would be very unlikely for the files to change in between login and reconnecting.</p>
 <ul>
 <li><code>checksum_salt</code> is sent by the server <a href="https://wowdev.wiki/CMD_AUTH_RECONNECT_CHALLENGE_Server"><code>CMD_AUTH_RECONNECT_CHALLENGE_Server</code></a> in the field just after the SRP6 salt.</li>
-<li><code>client_public_key</code> is the client public key provided by the client.</li>
 <li><code>+</code> is array concatenation.</li>
 </ul>
 <p>Calculating the reconnect integrity hash in pseudo code would look like:</p>
