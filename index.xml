@@ -214,7 +214,7 @@ Real clients will always reply with a <strong>proof</strong> if the fields from 
 <td>unsigned integer</td>
 <td>unsigned integer</td>
 <td>unsigned integer</td>
-<td>Little endian array</td>
+<td>Big endian array</td>
 <td><code>challenge_count</code> pairs of <code>x</code> and <code>y</code> separated by space</td>
 </tr>
 </tbody>
@@ -273,8 +273,8 @@ Test this using <a href="#create-proof">Create Proof</a> instead.</p>
 <td>unsigned integer</td>
 <td>unsigned integer</td>
 <td>unsigned integer</td>
-<td>Little endian array</td>
-<td>Little endian array</td>
+<td>Big endian array</td>
+<td>Big endian array</td>
 <td>unsigned integer</td>
 <td><code>challenge_count</code> unsigned integers to be entered using <a href="#enter-digit">Enter Digit</a></td>
 </tr>
@@ -413,9 +413,9 @@ So a PIN of <code>1, 2, 3, 4</code> would be an array of <code>[1, 2, 3, 4]</cod
 <tr>
 <td>Unsigned integer</td>
 <td>Unsigned integer</td>
-<td>Little Endian Hex</td>
-<td>Little Endian Hex</td>
-<td>Little Endian Hex</td>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
 </tr>
 </tbody>
 </table>
@@ -463,7 +463,7 @@ So a PIN of <code>1, 2, 3, 4</code> would be an array of <code>[1, 2, 3, 4]</cod
 <tbody>
 <tr>
 <td>Unsigned integer</td>
-<td>Little Endian Hex</td>
+<td>Big Endian Hex</td>
 </tr>
 </tbody>
 </table>
@@ -505,9 +505,9 @@ So a PIN of <code>1, 2, 3, 4</code> would be an array of <code>[1, 2, 3, 4]</cod
 </thead>
 <tbody>
 <tr>
-<td>Little Endian Hex</td>
-<td>Little Endian Hex</td>
-<td>Little Endian Hex</td>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
 </tr>
 </tbody>
 </table>
@@ -565,10 +565,10 @@ The algorithm is the same as the platform specific versions, but all the checked
 </thead>
 <tbody>
 <tr>
-<td>Little endian Hex</td>
-<td>Little Endian Hex</td>
-<td>Little Endian Hex</td>
-<td>Little Endian Hex</td>
+<td>Big endian Hex</td>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
 </tr>
 </tbody>
 </table>
@@ -617,13 +617,13 @@ The algorithm is the same as the platform specific versions, but all the checked
 </thead>
 <tbody>
 <tr>
-<td>Little endian Hex</td>
-<td>Little endian Hex</td>
-<td>Little endian Hex</td>
-<td>Little endian Hex</td>
-<td>Little Endian Hex</td>
-<td>Little Endian Hex</td>
-<td>Little Endian Hex</td>
+<td>Big endian Hex</td>
+<td>Big endian Hex</td>
+<td>Big endian Hex</td>
+<td>Big endian Hex</td>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
 <td></td>
 </tr>
 </tbody>
@@ -673,13 +673,13 @@ The algorithm is the same as the platform specific versions, but all the checked
 </thead>
 <tbody>
 <tr>
-<td>Little endian Hex</td>
-<td>Little endian Hex</td>
-<td>Little endian Hex</td>
-<td>Little endian Hex</td>
-<td>Little Endian Hex</td>
-<td>Little Endian Hex</td>
-<td>Little Endian Hex</td>
+<td>Big endian Hex</td>
+<td>Big endian Hex</td>
+<td>Big endian Hex</td>
+<td>Big endian Hex</td>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
+<td>Big Endian Hex</td>
 <td></td>
 </tr>
 </tbody>
@@ -712,8 +712,8 @@ This is likely to save on resources since it would be very unlikely for the file
 </thead>
 <tbody>
 <tr>
-<td>Little endian Hex</td>
-<td>Little endian Hex</td>
+<td>Big endian Hex</td>
+<td>Big endian Hex</td>
 </tr>
 </tbody>
 </table>
