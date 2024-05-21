@@ -411,7 +411,7 @@ So a PIN of <code>1, 2, 3, 4</code> would be an array of <code>[1, 2, 3, 4]</cod
 </thead>
 <tbody>
 <tr>
-<td>Unsigned integer</td>
+<td>Big Endian Hex</td>
 <td>Unsigned integer</td>
 <td>Big Endian Hex</td>
 <td>Big Endian Hex</td>
