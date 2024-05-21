@@ -29,7 +29,7 @@ Real clients will always reply with a <strong>proof</strong> if the fields from 
 </span></span><span style=display:flex><span>    coordinates = array of challenge_count u32s
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>    for i, coordinate in enumerate(coordinates):
-</span></span><span style=display:flex><span>            count = len(matrix_indices) - i;
+</span></span><span style=display:flex><span>        count = len(matrix_indices) - i;
 </span></span><span style=display:flex><span>        index = seed % count;
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>        coordinate = matrix_indices[index];
@@ -53,11 +53,12 @@ Real clients will always reply with a <strong>proof</strong> if the fields from 
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>    md5 = MD5(seed as little endian array + session_key)
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>        rc4 = RC4(md5)
+</span></span><span style=display:flex><span>    # Do not drop anything, unlike headers dropping 1024
+</span></span><span style=display:flex><span>    rc4 = RC4(md5)
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>        hmac = HMAC-SHA1(md5)
+</span></span><span style=display:flex><span>    hmac = HMAC-SHA1(md5)
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>        return hmac, rc4, coordinates
+</span></span><span style=display:flex><span>    return hmac, rc4, coordinates
 </span></span></code></pre></div><h3 id=implementations-1>Implementations</h3><ul><li><a href=https://github.com/gtker/wow_srp/blob/89926ba8c2eb68fe8b270907c05f0e5ce18b8089/src/matrix_card.rs#L374>Rust (wow_srp)</a></li><li><a href=https://gist.github.com/barncastle/979c12a9c5e64d810a28ad1728e7e0f9#file-wowmatrixcard-cs-L20>C# (Barncastle Gist)</a></li></ul><h3 id=verification-values-1>Verification values</h3><p>There are no verification values for this function since the HMAC and RC4 ciphers aren&rsquo;t finished, and the coordinates are verified in <a href=#generate-coordinates>Generate Coordinates</a>.</p><h2 id=get-coordinate>Get Coordinate</h2><p>This function returns the <code>(x, y)</code> location on the pre shared key that should be entered using <a href=#enter-value>Enter Value</a>.</p><ul><li><code>width</code> is the <strong>width</strong> sent by the server.</li><li><code>height</code> is the <strong>height</strong> sent by the server.</li><li><code>challenge_count</code> is the <strong>challenge count</strong>/<strong>rounds</strong> sent by the server.</li><li><code>round</code> is the iteration number. So the first iteration would be 0, the second 1, and so on.</li><li><code>coordinates</code> is the array created by <a href=#generate-coordinates>Generate Coordinates</a>.</li></ul><p>Getting coordinates in pseudo code would look like:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>function get_coordinate
 </span></span><span style=display:flex><span>    argument challenge_count: u8
 </span></span><span style=display:flex><span>    argument coordinates: array of u32s
@@ -71,11 +72,11 @@ Real clients will always reply with a <strong>proof</strong> if the fields from 
 </span></span><span style=display:flex><span>    coord = coordinates[round]
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>    x = coord % width
-</span></span><span style=display:flex><span>        y = coord / width
+</span></span><span style=display:flex><span>    y = coord / width
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>    # y can not be greater than or equal to height
 </span></span><span style=display:flex><span>    return x, y
-</span></span></code></pre></div><h3 id=implementations-2>Implementations</h3><ul><li><a href=https://github.com/gtker/wow_srp/blob/89926ba8c2eb68fe8b270907c05f0e5ce18b8089/src/matrix_card.rs#L407>Rust (wow_srp)</a></li><li><a href=https://gist.github.com/barncastle/979c12a9c5e64d810a28ad1728e7e0f9#file-wowmatrixcard-cs-L60>C# (Barncastle Gist)</a></li></ul><h3 id=verification-values-2>Verification Values</h3><ul><li><a href=get_coordinate_regression.txt><code>get_coordinate_regression</code></a> contains the columns:</li></ul><table><thead><tr><th><code>height</code></th><th><code>width</code></th><th><code>seed</code></th><th><code>challenge_count</code></th><th><code>session_key</code></th><th><code>expected</code></th></tr></thead><tbody><tr><td>unsigned integer</td><td>unsigned integer</td><td>unsigned integer</td><td>unsigned integer</td><td>Big endian array</td><td><code>challenge_count</code> pairs of <code>x</code> and <code>y</code> separated by space</td></tr></tbody></table><h2 id=enter-digit>Enter Digit</h2><p>Enters a single digit from a cell.
+</span></span></code></pre></div><h3 id=implementations-2>Implementations</h3><ul><li><a href=https://github.com/gtker/wow_srp/blob/89926ba8c2eb68fe8b270907c05f0e5ce18b8089/src/matrix_card.rs#L407>Rust (wow_srp)</a> <a href=https://github.com/gtker/wow_srp/blob/fd4ff7cd48cf3708ba499d6f09127e8d8bde53b1/src/matrix_card.rs#L594>Rust test implementation</a></li><li><a href=https://gist.github.com/barncastle/979c12a9c5e64d810a28ad1728e7e0f9#file-wowmatrixcard-cs-L60>C# (Barncastle Gist)</a></li></ul><h3 id=verification-values-2>Verification Values</h3><ul><li><a href=get_coordinate_regression.txt><code>get_coordinate_regression</code></a> contains the columns:</li></ul><table><thead><tr><th><code>height</code></th><th><code>width</code></th><th><code>seed</code></th><th><code>challenge_count</code></th><th><code>session_key</code></th><th><code>expected</code></th></tr></thead><tbody><tr><td>unsigned integer</td><td>unsigned integer</td><td>unsigned integer</td><td>unsigned integer</td><td>Big endian array</td><td><code>challenge_count</code> pairs of <code>x</code> and <code>y</code> separated by space</td></tr></tbody></table><h2 id=enter-digit>Enter Digit</h2><p>Enters a single digit from a cell.
 Digits should be in the range <code>[0;9]</code> and should be entered one by one.
 Nothing needs to be done in between rounds.</p><p>Entering digits in pseudo code would look like:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>function enter_digit
 </span></span><span style=display:flex><span>    argument rc4: in progress RC4 object created by create_new_objects
@@ -84,7 +85,7 @@ Nothing needs to be done in between rounds.</p><p>Entering digits in pseudo code
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>    new_value = rc4.apply(value)
 </span></span><span style=display:flex><span>    hmac.apply(new_value)
-</span></span></code></pre></div><h3 id=implementations-3>Implementations</h3><ul><li><a href=https://github.com/gtker/wow_srp/blob/89926ba8c2eb68fe8b270907c05f0e5ce18b8089/src/matrix_card.rs#L428>Rust (wow_srp)</a></li><li><a href=https://gist.github.com/barncastle/979c12a9c5e64d810a28ad1728e7e0f9#file-wowmatrixcard-cs-L80>C# (Barncastle Gist)</a></li></ul><h3 id=verification-values-3>Verification Values</h3><p>Since this function doesn&rsquo;t provide any output there are no verification values.
+</span></span></code></pre></div><h3 id=implementations-3>Implementations</h3><ul><li><a href=https://github.com/gtker/wow_srp/blob/89926ba8c2eb68fe8b270907c05f0e5ce18b8089/src/matrix_card.rs#L428>Rust (wow_srp)</a> <a href=https://github.com/gtker/wow_srp/blob/fd4ff7cd48cf3708ba499d6f09127e8d8bde53b1/src/matrix_card.rs#L530>Rust test implementation</a></li><li><a href=https://gist.github.com/barncastle/979c12a9c5e64d810a28ad1728e7e0f9#file-wowmatrixcard-cs-L80>C# (Barncastle Gist)</a></li></ul><h3 id=verification-values-3>Verification Values</h3><p>Since this function doesn&rsquo;t provide any output there are no verification values.
 Test this using <a href=#create-proof>Create Proof</a> instead.</p><h2 id=create-proof>Create Proof</h2><p>Finalizes the proof after digits have been entered.</p><p>In pseudo code it would look like:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>function create_proof
 </span></span><span style=display:flex><span>    argument hmac: in progress HMAC-SHA1 object created by create_new_objects
 </span></span><span style=display:flex><span>    returns array of 20 bytes
