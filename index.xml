@@ -2012,6 +2012,54 @@ Individual images can be found at <a href="encryption/page-0.png">step 1</a>, <a
 </tr>
 </tbody>
 </table>
+<p>The following files can be used to verify utility methods that return a size and opcode.
+The data should be decrypted first using the side in the file name, then encrypted again in order to verify that the write also matches.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>session_key <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0x2E</span>, <span style="color:#ae81ff">0xFE</span>, <span style="color:#ae81ff">0xE7</span>, <span style="color:#ae81ff">0xB0</span>, <span style="color:#ae81ff">0xC1</span>, <span style="color:#ae81ff">0x77</span>, <span style="color:#ae81ff">0xEB</span>, <span style="color:#ae81ff">0xBD</span>, <span style="color:#ae81ff">0xFF</span>, <span style="color:#ae81ff">0x66</span>, <span style="color:#ae81ff">0x76</span>, <span style="color:#ae81ff">0xC5</span>, <span style="color:#ae81ff">0x6E</span>, <span style="color:#ae81ff">0xFC</span>, <span style="color:#ae81ff">0x23</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0x39</span>, <span style="color:#ae81ff">0xBE</span>, <span style="color:#ae81ff">0x9C</span>, <span style="color:#ae81ff">0xAD</span>, <span style="color:#ae81ff">0x14</span>, <span style="color:#ae81ff">0xBF</span>, <span style="color:#ae81ff">0x8B</span>, <span style="color:#ae81ff">0x54</span>, <span style="color:#ae81ff">0xBB</span>, <span style="color:#ae81ff">0x5A</span>, <span style="color:#ae81ff">0x86</span>, <span style="color:#ae81ff">0xFB</span>, <span style="color:#ae81ff">0xF8</span>, <span style="color:#ae81ff">0x1F</span>, <span style="color:#ae81ff">0x6D</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0x42</span>, <span style="color:#ae81ff">0x4A</span>, <span style="color:#ae81ff">0xA2</span>, <span style="color:#ae81ff">0x3C</span>, <span style="color:#ae81ff">0xC9</span>, <span style="color:#ae81ff">0xA3</span>, <span style="color:#ae81ff">0x14</span>, <span style="color:#ae81ff">0x9F</span>, <span style="color:#ae81ff">0xB1</span>, <span style="color:#ae81ff">0x75</span>,
+</span></span><span style="display:flex;"><span>];
+</span></span><span style="display:flex;"><span>username <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;A&#34;</span>;
+</span></span><span style="display:flex;"><span>client_seed <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xDEADBEEF</span>;
+</span></span><span style="display:flex;"><span>server_seed <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xDEADBEEF</span>;
+</span></span></code></pre></div><ul>
+<li><a href="verification_values/encryption/vanilla_server.txt">vanilla_server</a> contains the columns:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Data (8 bytes)</th>
+<th>Size</th>
+<th>Opcode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Big Endian Hex</td>
+<td>Unsigned Integer</td>
+<td>Unsigned</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><a href="verification_values/encryption/vanilla_client.txt">vanilla_client</a> contains the columns:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Data (8 bytes)</th>
+<th>Size</th>
+<th>Opcode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Big Endian Hex</td>
+<td>Unsigned Integer</td>
+<td>Unsigned</td>
+</tr>
+</tbody>
+</table>
 <h3 id="decryption">Decryption</h3>
 <p>Decryption does the opposite of encryption. So first the old encrypted value is subtracted from the encrypted value, before it is XORed with the session key.</p>
 <p>The decryption is calculated as <code>x = (E - L) ^ S</code> where:</p>
@@ -2141,6 +2189,54 @@ Verification values are provided for</p>
 </tr>
 </tbody>
 </table>
+<p>The following files can be used to verify utility methods that return a size and opcode.
+The data should be decrypted first using the side in the file name, then encrypted again in order to verify that the write also matches.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>session_key <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0x2E</span>, <span style="color:#ae81ff">0xFE</span>, <span style="color:#ae81ff">0xE7</span>, <span style="color:#ae81ff">0xB0</span>, <span style="color:#ae81ff">0xC1</span>, <span style="color:#ae81ff">0x77</span>, <span style="color:#ae81ff">0xEB</span>, <span style="color:#ae81ff">0xBD</span>, <span style="color:#ae81ff">0xFF</span>, <span style="color:#ae81ff">0x66</span>, <span style="color:#ae81ff">0x76</span>, <span style="color:#ae81ff">0xC5</span>, <span style="color:#ae81ff">0x6E</span>, <span style="color:#ae81ff">0xFC</span>, <span style="color:#ae81ff">0x23</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0x39</span>, <span style="color:#ae81ff">0xBE</span>, <span style="color:#ae81ff">0x9C</span>, <span style="color:#ae81ff">0xAD</span>, <span style="color:#ae81ff">0x14</span>, <span style="color:#ae81ff">0xBF</span>, <span style="color:#ae81ff">0x8B</span>, <span style="color:#ae81ff">0x54</span>, <span style="color:#ae81ff">0xBB</span>, <span style="color:#ae81ff">0x5A</span>, <span style="color:#ae81ff">0x86</span>, <span style="color:#ae81ff">0xFB</span>, <span style="color:#ae81ff">0xF8</span>, <span style="color:#ae81ff">0x1F</span>, <span style="color:#ae81ff">0x6D</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0x42</span>, <span style="color:#ae81ff">0x4A</span>, <span style="color:#ae81ff">0xA2</span>, <span style="color:#ae81ff">0x3C</span>, <span style="color:#ae81ff">0xC9</span>, <span style="color:#ae81ff">0xA3</span>, <span style="color:#ae81ff">0x14</span>, <span style="color:#ae81ff">0x9F</span>, <span style="color:#ae81ff">0xB1</span>, <span style="color:#ae81ff">0x75</span>,
+</span></span><span style="display:flex;"><span>];
+</span></span><span style="display:flex;"><span>username <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;A&#34;</span>;
+</span></span><span style="display:flex;"><span>client_seed <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xDEADBEEF</span>;
+</span></span><span style="display:flex;"><span>server_seed <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xDEADBEEF</span>;
+</span></span></code></pre></div><ul>
+<li><a href="verification_values/encryption/tbc_server.txt">tbc_server</a> contains the columns:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Data (8 bytes)</th>
+<th>Size</th>
+<th>Opcode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Big Endian Hex</td>
+<td>Unsigned Integer</td>
+<td>Unsigned</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><a href="verification_values/encryption/tbc_client.txt">tbc_client</a> contains the columns:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Data (8 bytes)</th>
+<th>Size</th>
+<th>Opcode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Big Endian Hex</td>
+<td>Unsigned Integer</td>
+<td>Unsigned</td>
+</tr>
+</tbody>
+</table>
 <h2 id="wrath-world-message-header-encryption">Wrath World Message Header Encryption</h2>
 <p>Wrath creates an intermediate key by running a fixed key and the <strong>session key</strong> through HMAC-SHA1, and then uses this to seed an RC4A cipher that encrypts the header.</p>
 <p>The key generation function is essentially the same as the TBC generation, except TBC uses the same hardcoded seed for both client and server, while Wrath has separate keys.</p>
@@ -2242,6 +2338,54 @@ Then apply the keystream to 1024 bytes (since this is the drop1024 variant).</p>
 <td>Big Endian Hex</td>
 <td>Big Endian Hex</td>
 <td></td>
+</tr>
+</tbody>
+</table>
+<p>The following files can be used to verify utility methods that return a size and opcode.
+The data should be decrypted first using the side in the file name, then encrypted again in order to verify that the write also matches.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>session_key <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0x2E</span>, <span style="color:#ae81ff">0xFE</span>, <span style="color:#ae81ff">0xE7</span>, <span style="color:#ae81ff">0xB0</span>, <span style="color:#ae81ff">0xC1</span>, <span style="color:#ae81ff">0x77</span>, <span style="color:#ae81ff">0xEB</span>, <span style="color:#ae81ff">0xBD</span>, <span style="color:#ae81ff">0xFF</span>, <span style="color:#ae81ff">0x66</span>, <span style="color:#ae81ff">0x76</span>, <span style="color:#ae81ff">0xC5</span>, <span style="color:#ae81ff">0x6E</span>, <span style="color:#ae81ff">0xFC</span>, <span style="color:#ae81ff">0x23</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0x39</span>, <span style="color:#ae81ff">0xBE</span>, <span style="color:#ae81ff">0x9C</span>, <span style="color:#ae81ff">0xAD</span>, <span style="color:#ae81ff">0x14</span>, <span style="color:#ae81ff">0xBF</span>, <span style="color:#ae81ff">0x8B</span>, <span style="color:#ae81ff">0x54</span>, <span style="color:#ae81ff">0xBB</span>, <span style="color:#ae81ff">0x5A</span>, <span style="color:#ae81ff">0x86</span>, <span style="color:#ae81ff">0xFB</span>, <span style="color:#ae81ff">0xF8</span>, <span style="color:#ae81ff">0x1F</span>, <span style="color:#ae81ff">0x6D</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0x42</span>, <span style="color:#ae81ff">0x4A</span>, <span style="color:#ae81ff">0xA2</span>, <span style="color:#ae81ff">0x3C</span>, <span style="color:#ae81ff">0xC9</span>, <span style="color:#ae81ff">0xA3</span>, <span style="color:#ae81ff">0x14</span>, <span style="color:#ae81ff">0x9F</span>, <span style="color:#ae81ff">0xB1</span>, <span style="color:#ae81ff">0x75</span>,
+</span></span><span style="display:flex;"><span>];
+</span></span><span style="display:flex;"><span>username <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;A&#34;</span>;
+</span></span><span style="display:flex;"><span>client_seed <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xDEADBEEF</span>;
+</span></span><span style="display:flex;"><span>server_seed <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xDEADBEEF</span>;
+</span></span></code></pre></div><ul>
+<li><a href="verification_values/encryption/wrath_server.txt">wrath_server</a> contains the columns:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Data (8 bytes)</th>
+<th>Size</th>
+<th>Opcode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Big Endian Hex</td>
+<td>Unsigned Integer</td>
+<td>Unsigned</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><a href="verification_values/encryption/wrath_client.txt">wrath_client</a> contains the columns:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Data (8 bytes)</th>
+<th>Size</th>
+<th>Opcode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Big Endian Hex</td>
+<td>Unsigned Integer</td>
+<td>Unsigned</td>
 </tr>
 </tbody>
 </table>
