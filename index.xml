@@ -767,6 +767,12 @@ There are more implementations linked later in the article, but they are part of
 <td>Native .NET Standard 2.1 compatible.</td>
 </tr>
 <tr>
+<td><a href="https://github.com/gtker/wow_srp_c">wow_srp_c</a></td>
+<td>Gtker</td>
+<td>C/C++</td>
+<td>C/C++ bindings to <a href="https://github.com/gtker/wow_srp">wow_srp</a>.</td>
+</tr>
+<tr>
 <td><a href="https://github.com/oiramario/wow_srp6/tree/main">wow_srp6</a></td>
 <td>Gtker</td>
 <td>Python</td>
