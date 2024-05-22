@@ -734,6 +734,46 @@ giving a function-by-function implementation guide, including files for verifica
 <p><strong>This is not intended to be a guide for production usage. I have no cryptographic experience and essentially stumbled upon the solutions by accident.
 SRP6 is also not very widely used, possibly for a reason.
 Use this only for interacting with legacy World of Warcraft game clients.</strong></p>
+<h2 id="ensure-that-you-actually-need-to-implement-this-from-scratch">Ensure that you actually need to implement this from scratch</h2>
+<p>There is little reason to implement this from scratch if you can just use an existing library for it.</p>
+<p>These are the libraries that I know of, if you want yours added to the list send me an email.
+There are more implementations linked later in the article, but they are part of applications and can&rsquo;t be used as libraries.</p>
+<table>
+<thead>
+<tr>
+<th>Name and link</th>
+<th>Author</th>
+<th>Language</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/gtker/wow_srp">wow_srp</a></td>
+<td>Gtker</td>
+<td>Rust</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="https://github.com/gtker/wow_srp_python">wow_srp_python</a></td>
+<td>Gtker</td>
+<td>Python</td>
+<td>Python bindings to <a href="https://github.com/gtker/wow_srp">wow_srp</a>.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/gtker/wow_srp_csharp">wow_srp_csharp</a></td>
+<td>Gtker</td>
+<td>C#</td>
+<td>Native .NET Standard 2.1 compatible.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/oiramario/wow_srp6/tree/main">wow_srp6</a></td>
+<td>Gtker</td>
+<td>Python</td>
+<td>Native Python implementation.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="srp6-overview">SRP6 Overview</h2>
 <p>SRP6 is a protocol for proving that a client and server both know the same specific password without having to send it over the network.
 It does this via various mathematical tricks, none of which are important to us.</p>
