@@ -1056,6 +1056,7 @@ Not all terms have a long term, since some terms only exist as intermediate resu
 A completely functional program will only be possible once everything except for the Reconnect proof has been implemented.
 Test against the provided text files for every function to ensure that no mistakes occur.</p>
 <p>The <a href="https://github.com/gtker/wow_srp">wow_srp</a> Rust crate implements the full algorithm, with examples for both client and server located in the <a href="https://github.com/gtker/wow_messages/tree/main/examples">examples/</a> directory.
+<a href="https://github.com/gtker/wow_srp">WowSrp</a> has a C# version.
 <a href="https://github.com/EmberEmu/Ember/tree/development/src/libs/srp6">Ember</a> has a C++ version.
 <a href="https://gitlab.com/shadowburn/shadowburn/-/tree/master/apps/logind">Shadowburn</a> has an Elixir version.
 <a href="https://github.com/oiramario/wow_srp6">wow_srp6</a> is a Python version.</p>
@@ -1090,6 +1091,7 @@ Test against the provided text files for every function to ensure that no mistak
 </code></pre><h5 id="implementations">Implementations</h5>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/b72d2a396d0c9db5df3a6815e8ebf23230c157fe/src/srp_internal.rs#L105">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/Implementation.cs#L24">C# (WowSrp</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/include/srp6/Generator.h#L29">C++ (Ember)</a>. Slightly confusing way of doing it. Callsite is <a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/include/srp6/Util.h#L46">here</a>, then <a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/include/srp6/Util.h#L53">here</a> and then <a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Util.cpp#L192">here</a>.</li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/common/lib/accounts/accounts.ex#L88">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L46">Python (wow_srp6)</a></li>
@@ -1152,6 +1154,7 @@ Test against the provided text files for every function to ensure that no mistak
 </code></pre><h5 id="implementations-1">Implementations</h5>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/b72d2a396d0c9db5df3a6815e8ebf23230c157fe/src/srp_internal.rs#L66">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/Implementation.cs#L39">C# (WowSrp)</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/03c130d3d6276e7032fc9e13c9d287ea7c6ed536/src/libs/srp6/src/Util.cpp#L97">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/common/lib/accounts/accounts.ex#L82">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L37">Python (wow_srp6)</a></li>
@@ -1230,6 +1233,7 @@ It contains the columns:</li>
 </code></pre><h5 id="implementations-2">Implementations</h5>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/b72d2a396d0c9db5df3a6815e8ebf23230c157fe/src/srp_internal.rs#L122">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/Implementation.cs#L53">C# (WowSrp</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Server.cpp#L25">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/character-login/apps/logind/lib/authenticator.ex#L386">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L55">Python (wow_srp6)</a></li>
@@ -1300,6 +1304,7 @@ The calculation of the client and server <strong>S keys</strong> are below.</p>
 </code></pre><h5 id="implementations-3">Implementations</h5>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/b72d2a396d0c9db5df3a6815e8ebf23230c157fe/src/srp_internal_client.rs#L24">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/Implementation.cs#L98">C# (WowSrp</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Client.cpp#L59">C++ (Ember)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L66">Python (wow_srp6)</a></li>
 </ul>
@@ -1365,6 +1370,7 @@ The calculation of the client and server <strong>S keys</strong> are below.</p>
 </code></pre><h5 id="implementations-4">Implementations</h5>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/b72d2a396d0c9db5df3a6815e8ebf23230c157fe/src/srp_internal.rs#L148">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/Implementation.cs#L77">C# (WowSrp</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Server.cpp#L45">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L395">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L78">Python (wow_srp6)</a></li>
@@ -1419,6 +1425,7 @@ The calculation of the client and server <strong>S keys</strong> are below.</p>
 </code></pre><h5 id="implementations-5">Implementations</h5>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/b72d2a396d0c9db5df3a6815e8ebf23230c157fe/src/srp_internal.rs#L137">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/Implementation.cs#L67">C# (WowSrp</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Server.cpp#L44">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L394">Elixir (Shadowburn)</a> where it&rsquo;s called the scrambler.</li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L90">Python (wow_srp6)</a></li>
@@ -1507,6 +1514,8 @@ function SHA_Interleave
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/6cfef1615cf412b6580608126922c7050ff3af8d/src/key.rs#L293">Rust (wow_srp) (<code>split_s_key</code>)</a></li>
 <li><a href="https://github.com/gtker/wow_srp/blob/6cfef1615cf412b6580608126922c7050ff3af8d/src/srp_internal.rs#L156">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/Implementation.cs#L122">C# (WowSrp (<code>SplitSKey</code>)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/Implementation.cs#L142">C# (WowSrp</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Util.cpp#L42">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L417">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L98">Python (wow_srp6)</a></li>
@@ -1563,6 +1572,7 @@ function SHA_Interleave
 </span></span></code></pre></div><h5 id="implementations-7">Implementations</h5>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/8e632f27c3b3850f77a9b9e5e732b295b0dadeb9/src/srp_internal.rs#L182">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/Implementation.cs#L263">C# (WowSrp</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/9da97165902c36b976a27764af028195da93c60a/src/libs/srp6/src/Server.cpp#L32">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L391">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L440">Python (wow_srp6)</a></li>
@@ -1620,6 +1630,7 @@ function SHA_Interleave
 </span></span></code></pre></div><h5 id="implementations-8">Implementations</h5>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/8e632f27c3b3850f77a9b9e5e732b295b0dadeb9/src/srp_internal_client.rs#L23">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/Implementation.cs#L279">C# (WowSrp</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/9da97165902c36b976a27764af028195da93c60a/src/libs/srp6/src/Client.cpp#L38">C++ (Ember)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L425">Python (wow_srp6)</a></li>
 </ul>
@@ -1683,6 +1694,7 @@ function SHA_Interleave
 </code></pre><h5 id="implementations-9">Implementations</h5>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/b72d2a396d0c9db5df3a6815e8ebf23230c157fe/src/srp_internal.rs#L211">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/Implementation.cs#L176">C# (WowSrp</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Server.cpp#L57">C++ (Ember)</a> calls into <a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Util.cpp#L169">here</a>.</li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L413">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L124">Python (wow_srp6)</a></li>
@@ -1752,6 +1764,7 @@ function SHA_Interleave
 </code></pre><h5 id="implementations-10">Implementations</h5>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/b72d2a396d0c9db5df3a6815e8ebf23230c157fe/src/srp_internal.rs#L241">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/Implementation.cs#L188">C# (WowSrp</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Util.cpp#L134">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L403">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L147">Python (wow_srp6)</a></li>
@@ -1815,6 +1828,7 @@ See the verification values for the value.</p>
 </code></pre><h5 id="implementations-11">Implementations</h5>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/b72d2a396d0c9db5df3a6815e8ebf23230c157fe/src/srp_internal.rs#L225">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/Implementation.cs#L207">C# (WowSrp</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Util.cpp#L142">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L401">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L132">Python (wow_srp6)</a></li>
@@ -1868,6 +1882,7 @@ See the verification values for the value.</p>
 </code></pre><h5 id="implementations-12">Implementations</h5>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/b72d2a396d0c9db5df3a6815e8ebf23230c157fe/src/srp_internal_client.rs#L9">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/Implementation.cs#L224">C# (WowSrp</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Client.cpp#L30">C++ (Ember)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L156">Python (wow_srp6)</a></li>
 </ul>
@@ -1942,6 +1957,7 @@ The <strong>reconnect proof</strong> is calculated as <code>SHA1( username | cli
 </code></pre><h4 id="implementations-13">Implementations</h4>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/b72d2a396d0c9db5df3a6815e8ebf23230c157fe/src/srp_internal.rs#L263">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/Implementation.cs#L237">C# (WowSrp</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/90b9a7b43df4744f856e81e3efcf1de92bcb4ebf/src/login/Authenticator.cpp#L59">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L435">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L166">Python (wow_srp6)</a></li>
@@ -2028,6 +2044,7 @@ Individual images can be found at <a href="encryption/page-0.png">step 1</a>, <a
 </code></pre><h4 id="implementations-14">Implementations</h4>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/bc10da51a44b368b64fe5491dc305287bb431e74/src/header_crypto/mod.rs#L106">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/HeaderImplementation.cs#L58">C# (WowSrp</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/90b9a7b43df4744f856e81e3efcf1de92bcb4ebf/src/gateway/PacketCrypto.h#L44">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/serverd/lib/session.ex#L56">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L173">Python (wow_srp6)</a></li>
@@ -2141,6 +2158,7 @@ The data should be decrypted first using the side in the file name, then encrypt
 </code></pre><h4 id="implementations-15">Implementations</h4>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/bc10da51a44b368b64fe5491dc305287bb431e74/src/header_crypto/mod.rs#L166">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/HeaderImplementation.cs#L34">C# (WowSrp</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/90b9a7b43df4744f856e81e3efcf1de92bcb4ebf/src/gateway/PacketCrypto.h#L58">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/serverd/lib/session.ex#L73">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L191">Python (wow_srp6)</a></li>
@@ -2187,6 +2205,7 @@ Verification values are provided for</p>
 </span></span></code></pre></div><h4 id="implementations-16">Implementations</h4>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/35c69c542fba64d7fdfdaeb6ad16990fd79312de/src/tbc_header/mod.rs#L316">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/HeaderImplementation.cs#L29">C# (WowSrp)</a></li>
 </ul>
 <h4 id="verification-values-16">Verification values</h4>
 <ul>
@@ -2307,6 +2326,7 @@ The data should be decrypted first using the side in the file name, then encrypt
 </span></span></code></pre></div><h4 id="implementations-17">Implementations</h4>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/e13ad2a397f385ee3236781a9838150652714f5d/src/wrath_header/inner_crypto/mod.rs#L35">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/HeaderImplementation.cs#L31">C# (WowSrp)</a></li>
 </ul>
 <h4 id="verification-values-18">Verification values</h4>
 <ul>
@@ -2355,6 +2375,7 @@ Then apply the keystream to 1024 bytes (since this is the drop1024 variant).</p>
 </span></span></code></pre></div><h4 id="implementations-18">Implementations</h4>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/e13ad2a397f385ee3236781a9838150652714f5d/src/wrath_header/inner_crypto/mod.rs#L20">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Header/WrathServerDecryption.cs#L18">C# (WowSrp)</a></li>
 </ul>
 <h4 id="verification-values-19">Verification values</h4>
 <p>These verification values use the above keys. Ensure that you&rsquo;re using the correct one for the correct direction and side.</p>
@@ -2472,6 +2493,7 @@ The data should be decrypted first using the side in the file name, then encrypt
 </code></pre><h4 id="implementations-19">Implementations</h4>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/761b040d9d7f18dcb760424eeaef15994f321116/src/srp_internal.rs#L260">Rust (wow_srp)</a></li>
+<li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/Implementation.cs#L251">C# (WowSrp)</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/b0dbeb3dc4230a18c7be38c2cedd712ef6e3cfd4/src/gateway/states/Authentication.cpp#L166">C++ (Ember)</a></li>
 <li><a href="https://github.com/mangoszero/server/blob/e45aa74e0fa3a9677d90fc012b8161e1e9935742/src/game/Server/WorldSocket.cpp#L784">C++ (Mangos)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/serverd/lib/session.ex#L127">Elixir (Shadowburn)</a></li>
