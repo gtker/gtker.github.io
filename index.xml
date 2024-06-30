@@ -778,6 +778,12 @@ There are more implementations linked later in the article, but they are part of
 <td>Python</td>
 <td>Native Python implementation.</td>
 </tr>
+<tr>
+<td><a href="https://github.com/Kangaroux/go-wow-srp6">go-wow-srp6</a></td>
+<td>Kangaroux</td>
+<td>Go</td>
+<td>Native Go implementation.</td>
+</tr>
 </tbody>
 </table>
 <h2 id="srp6-overview">SRP6 Overview</h2>
@@ -1101,6 +1107,7 @@ Test against the provided text files for every function to ensure that no mistak
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/include/srp6/Generator.h#L29">C++ (Ember)</a>. Slightly confusing way of doing it. Callsite is <a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/include/srp6/Util.h#L46">here</a>, then <a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/include/srp6/Util.h#L53">here</a> and then <a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Util.cpp#L192">here</a>.</li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/common/lib/accounts/accounts.ex#L88">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L46">Python (wow_srp6)</a></li>
+<li><a href="https://github.com/Kangaroux/go-wow-srp6/blob/7a61e15fd8d75f4ebe8ac91e07eef140219ef8ff/srp.go#L14">Go (go-wow-srp6)</a></li>
 </ul>
 <h5 id="verification-values">Verification values</h5>
 <ul>
@@ -1164,6 +1171,7 @@ Test against the provided text files for every function to ensure that no mistak
 <li><a href="https://github.com/EmberEmu/Ember/blob/03c130d3d6276e7032fc9e13c9d287ea7c6ed536/src/libs/srp6/src/Util.cpp#L97">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/common/lib/accounts/accounts.ex#L82">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L37">Python (wow_srp6)</a></li>
+<li><a href="https://github.com/Kangaroux/go-wow-srp6/blob/7a61e15fd8d75f4ebe8ac91e07eef140219ef8ff/srp.go#L74">Go (go-wow-srp6)</a></li>
 </ul>
 <h5 id="verification-values-1">Verification values</h5>
 <ul>
@@ -1243,6 +1251,7 @@ It contains the columns:</li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Server.cpp#L25">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/character-login/apps/logind/lib/authenticator.ex#L386">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L55">Python (wow_srp6)</a></li>
+<li><a href="https://github.com/Kangaroux/go-wow-srp6/blob/7a61e15fd8d75f4ebe8ac91e07eef140219ef8ff/srp.go#L22">Go (go-wow-srp6)</a></li>
 </ul>
 <h5 id="verification-values-2">Verification values</h5>
 <ul>
@@ -1380,6 +1389,7 @@ The calculation of the client and server <strong>S keys</strong> are below.</p>
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Server.cpp#L45">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L395">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L78">Python (wow_srp6)</a></li>
+<li><a href="https://github.com/Kangaroux/go-wow-srp6/blob/7a61e15fd8d75f4ebe8ac91e07eef140219ef8ff/srp.go#L37">Go (go-wow-srp6)</a></li>
 </ul>
 <h5 id="verification-values-4">Verification values</h5>
 <ul>
@@ -1435,6 +1445,7 @@ The calculation of the client and server <strong>S keys</strong> are below.</p>
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Server.cpp#L44">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L394">Elixir (Shadowburn)</a> where it&rsquo;s called the scrambler.</li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L90">Python (wow_srp6)</a></li>
+<li><a href="https://github.com/Kangaroux/go-wow-srp6/blob/7a61e15fd8d75f4ebe8ac91e07eef140219ef8ff/srp.go#L83">Go (go-wow-srp6)</a></li>
 </ul>
 <h5 id="verification-values-5">Verification values</h5>
 <ul>
@@ -1525,6 +1536,7 @@ function SHA_Interleave
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Util.cpp#L42">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L417">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L98">Python (wow_srp6)</a></li>
+<li><a href="https://github.com/Kangaroux/go-wow-srp6/blob/7a61e15fd8d75f4ebe8ac91e07eef140219ef8ff/srp.go#L45">Go (go-wow-srp6)</a></li>
 </ul>
 <h5 id="verification-values-6">Verification values</h5>
 <ul>
@@ -1582,6 +1594,7 @@ function SHA_Interleave
 <li><a href="https://github.com/EmberEmu/Ember/blob/9da97165902c36b976a27764af028195da93c60a/src/libs/srp6/src/Server.cpp#L32">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L391">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L440">Python (wow_srp6)</a></li>
+<li><a href="https://github.com/Kangaroux/go-wow-srp6/blob/7a61e15fd8d75f4ebe8ac91e07eef140219ef8ff/srp.go#L30">Go (go-wow-srp6)</a></li>
 </ul>
 <h5 id="verification-values-7">Verification values</h5>
 <p>You will need to calculate the <strong>server public key</strong> using the supplied <strong>password verifier</strong> and <strong>server private key</strong> in order to test this.</p>
@@ -1704,6 +1717,7 @@ function SHA_Interleave
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Server.cpp#L57">C++ (Ember)</a> calls into <a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Util.cpp#L169">here</a>.</li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L413">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L124">Python (wow_srp6)</a></li>
+<li><a href="https://github.com/Kangaroux/go-wow-srp6/blob/7a61e15fd8d75f4ebe8ac91e07eef140219ef8ff/proof.go#L31">Go (go-wow-srp6)</a></li>
 </ul>
 <h5 id="verification-values-9">Verification values</h5>
 <ul>
@@ -1774,6 +1788,7 @@ function SHA_Interleave
 <li><a href="https://github.com/EmberEmu/Ember/blob/368c9525fb0e550909fabe6ce6e39f029f8634df/src/libs/srp6/src/Util.cpp#L134">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L403">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L147">Python (wow_srp6)</a></li>
+<li><a href="https://github.com/Kangaroux/go-wow-srp6/blob/7a61e15fd8d75f4ebe8ac91e07eef140219ef8ff/proof.go#L11">Go (go-wow-srp6)</a></li>
 </ul>
 <h5 id="verification-values-10">Verification values</h5>
 <ul>
@@ -1967,6 +1982,7 @@ The <strong>reconnect proof</strong> is calculated as <code>SHA1( username | cli
 <li><a href="https://github.com/EmberEmu/Ember/blob/90b9a7b43df4744f856e81e3efcf1de92bcb4ebf/src/login/Authenticator.cpp#L59">C++ (Ember)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/logind/lib/authenticator.ex#L435">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L166">Python (wow_srp6)</a></li>
+<li><a href="https://github.com/Kangaroux/go-wow-srp6/blob/7a61e15fd8d75f4ebe8ac91e07eef140219ef8ff/proof.go#L41">Go (go-wow-srp6)</a></li>
 </ul>
 <h4 id="verification-values-13">Verification values</h4>
 <ul>
@@ -2504,6 +2520,7 @@ The data should be decrypted first using the side in the file name, then encrypt
 <li><a href="https://github.com/mangoszero/server/blob/e45aa74e0fa3a9677d90fc012b8161e1e9935742/src/game/Server/WorldSocket.cpp#L784">C++ (Mangos)</a></li>
 <li><a href="https://gitlab.com/shadowburn/shadowburn/-/blob/ac905fabf56579b3bda6f16689c74f544da043e2/apps/serverd/lib/session.ex#L127">Elixir (Shadowburn)</a></li>
 <li><a href="https://github.com/oiramario/wow_srp6/blob/3bf8e4660a35dbc6a49eb17adae6ec914ac07588/srp6.py#L209">Python (wow_srp6)</a></li>
+<li><a href="https://github.com/Kangaroux/go-wow-srp6/blob/7a61e15fd8d75f4ebe8ac91e07eef140219ef8ff/proof.go#L52">Go (go-wow-srp6)</a></li>
 </ul>
 <h4 id="verification-values-20">Verification values</h4>
 <ul>
