@@ -2349,6 +2349,7 @@ The data should be decrypted first using the side in the file name, then encrypt
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/e13ad2a397f385ee3236781a9838150652714f5d/src/wrath_header/inner_crypto/mod.rs#L35">Rust (wow_srp)</a></li>
 <li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Internal/HeaderImplementation.cs#L31">C# (WowSrp)</a></li>
+<li><a href="https://github.com/Kangaroux/go-wow-srp6/blob/d1ff15d12198aa172ba15520fb8347485bb4c77f/header/wrath.go#L151">Go (go-wow-srp6)</a></li>
 </ul>
 <h4 id="verification-values-18">Verification values</h4>
 <ul>
@@ -2398,6 +2399,7 @@ Then apply the keystream to 1024 bytes (since this is the drop1024 variant).</p>
 <ul>
 <li><a href="https://github.com/gtker/wow_srp/blob/e13ad2a397f385ee3236781a9838150652714f5d/src/wrath_header/inner_crypto/mod.rs#L20">Rust (wow_srp)</a></li>
 <li><a href="https://github.com/gtker/wow_srp_csharp/blob/f5ff42224697c220a7eb5e9c03e3c5d2b0f0e678/WowSrp/src/Header/WrathServerDecryption.cs#L18">C# (WowSrp)</a></li>
+<li><a href="https://github.com/Kangaroux/go-wow-srp6/blob/d1ff15d12198aa172ba15520fb8347485bb4c77f/header/wrath.go#L138">Go (go-wow-srp6)</a></li>
 </ul>
 <h4 id="verification-values-19">Verification values</h4>
 <p>These verification values use the above keys. Ensure that you&rsquo;re using the correct one for the correct direction and side.</p>
