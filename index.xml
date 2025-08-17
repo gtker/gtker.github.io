@@ -1657,7 +1657,7 @@ function SHA_Interleave
 <ul>
 <li><a href="verification_values/calculate_client_session_key.txt">calculate_client_session_key.txt</a> contains the columns:</li>
 </ul>
-<p><strong>The usernames and passwords will need to be uppercased before this test can pass.</strong></p>
+<p><strong>The usernames and passwords will need to be uppercased before this test will pass.</strong></p>
 <table>
 <thead>
 <tr>
