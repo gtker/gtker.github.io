@@ -722,7 +722,7 @@ This is likely to save on resources since it would be very unlikely for the file
 <li><a href="https://github.com/gtker/wow_srp/blob/119468a4896b42f7e1bc2ecdfeb790592dd173ea/src/integrity.rs#L120">Rust (wow_srp)</a></li>
 <li><a href="https://github.com/EmberEmu/Ember/blob/03c130d3d6276e7032fc9e13c9d287ea7c6ed536/src/login/LoginHandler.cpp#L370">C++ (Ember)</a></li>
 </ul>
-]]></content></entry><entry><title type="html">Implementation Guide for the World of Warcraft flavor of SRP6</title><link href="https://gtker.com/implementation-guide-for-the-world-of-warcraft-flavor-of-srp6/"/><id>https://gtker.com/implementation-guide-for-the-world-of-warcraft-flavor-of-srp6/</id><author><name>Gtker</name></author><published>2021-07-05T00:00:00+00:00</published><updated>2024-06-18T00:00:00+00:00</updated><content type="html"><![CDATA[<p>The authentication protocol for authenticating with a World of Warcraft (WoW) server is widely available but not very well documented.
+]]></content></entry><entry><title type="html">Implementation Guide for the World of Warcraft flavor of SRP6</title><link href="https://gtker.com/implementation-guide-for-the-world-of-warcraft-flavor-of-srp6/"/><id>https://gtker.com/implementation-guide-for-the-world-of-warcraft-flavor-of-srp6/</id><author><name>Gtker</name></author><published>2021-07-05T00:00:00+00:00</published><updated>2025-08-17T00:00:00+00:00</updated><content type="html"><![CDATA[<p>The authentication protocol for authenticating with a World of Warcraft (WoW) server is widely available but not very well documented.
 Most documentation is spread across forums or just directly links to <a href="https://tools.ietf.org/html/rfc2945">RFC2945</a>,
 the 8 page, 20 year old, very broad and unspecific RFC that describes SRP6 in relatively academic terms.</p>
 <p>The goal of this article is to be an approachable,
@@ -1864,7 +1864,7 @@ See the verification values for the value.</p>
 <tr>
 <th>Generator</th>
 <th>Large Safe Prime</th>
-<th>Client Public Key</th>
+<th>Expected</th>
 </tr>
 </thead>
 <tbody>
