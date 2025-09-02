@@ -2092,7 +2092,8 @@ Individual images can be found at <a href="encryption/page-0.png">step 1</a>, <a
 </tr>
 </tbody>
 </table>
-<p>The following files can be used to verify utility methods that return a size and opcode.
+<p><a href="https://gtker.com/wow_messages/ir/implementing_world.html#message-layout">World Packet</a> headers contain a 2 byte <strong>big endian</strong> size field and either a 4 (SMSG) or 6 (CMSG) byte opcode field.
+The following files can be used to verify utility methods that return a size and opcode.
 The data should be decrypted first using the side in the file name, then encrypted again in order to verify that the write also matches.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>session_key <span style="color:#f92672">=</span> [
 </span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0x2E</span>, <span style="color:#ae81ff">0xFE</span>, <span style="color:#ae81ff">0xE7</span>, <span style="color:#ae81ff">0xB0</span>, <span style="color:#ae81ff">0xC1</span>, <span style="color:#ae81ff">0x77</span>, <span style="color:#ae81ff">0xEB</span>, <span style="color:#ae81ff">0xBD</span>, <span style="color:#ae81ff">0xFF</span>, <span style="color:#ae81ff">0x66</span>, <span style="color:#ae81ff">0x76</span>, <span style="color:#ae81ff">0xC5</span>, <span style="color:#ae81ff">0x6E</span>, <span style="color:#ae81ff">0xFC</span>, <span style="color:#ae81ff">0x23</span>,
@@ -2109,8 +2110,8 @@ The data should be decrypted first using the side in the file name, then encrypt
 <thead>
 <tr>
 <th>Data (8 bytes)</th>
-<th>Size</th>
-<th>Opcode</th>
+<th>Size (2 bytes <strong>big endian</strong>)</th>
+<th>Opcode (2 bytes <strong>little endian</strong>)</th>
 </tr>
 </thead>
 <tbody>
@@ -2128,8 +2129,8 @@ The data should be decrypted first using the side in the file name, then encrypt
 <thead>
 <tr>
 <th>Data (8 bytes)</th>
-<th>Size</th>
-<th>Opcode</th>
+<th>Size (2 bytes <strong>big endian</strong>)</th>
+<th>Opcode (4 bytes <strong>little endian</strong></th>
 </tr>
 </thead>
 <tbody>
@@ -2271,7 +2272,8 @@ Verification values are provided for</p>
 </tr>
 </tbody>
 </table>
-<p>The following files can be used to verify utility methods that return a size and opcode.
+<p><a href="https://gtker.com/wow_messages/ir/implementing_world.html#message-layout">World Packet</a> headers contain a 2 byte <strong>big endian</strong> size field and either a 4 (SMSG) or 6 (CMSG) byte opcode field.
+The following files can be used to verify utility methods that return a size and opcode.
 The data should be decrypted first using the side in the file name, then encrypted again in order to verify that the write also matches.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>session_key <span style="color:#f92672">=</span> [
 </span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0x2E</span>, <span style="color:#ae81ff">0xFE</span>, <span style="color:#ae81ff">0xE7</span>, <span style="color:#ae81ff">0xB0</span>, <span style="color:#ae81ff">0xC1</span>, <span style="color:#ae81ff">0x77</span>, <span style="color:#ae81ff">0xEB</span>, <span style="color:#ae81ff">0xBD</span>, <span style="color:#ae81ff">0xFF</span>, <span style="color:#ae81ff">0x66</span>, <span style="color:#ae81ff">0x76</span>, <span style="color:#ae81ff">0xC5</span>, <span style="color:#ae81ff">0x6E</span>, <span style="color:#ae81ff">0xFC</span>, <span style="color:#ae81ff">0x23</span>,
@@ -2288,8 +2290,8 @@ The data should be decrypted first using the side in the file name, then encrypt
 <thead>
 <tr>
 <th>Data (8 bytes)</th>
-<th>Size</th>
-<th>Opcode</th>
+<th>Size (2 bytes <strong>big endian</strong>)</th>
+<th>Opcode (2 bytes <strong>little endian</strong>)</th>
 </tr>
 </thead>
 <tbody>
@@ -2307,8 +2309,8 @@ The data should be decrypted first using the side in the file name, then encrypt
 <thead>
 <tr>
 <th>Data (8 bytes)</th>
-<th>Size</th>
-<th>Opcode</th>
+<th>Size (2 bytes <strong>big endian</strong>)</th>
+<th>Opcode (4 bytes <strong>little endian</strong></th>
 </tr>
 </thead>
 <tbody>
@@ -2320,7 +2322,7 @@ The data should be decrypted first using the side in the file name, then encrypt
 </tbody>
 </table>
 <h2 id="wrath-world-message-header-encryption">Wrath World Message Header Encryption</h2>
-<p>Wrath creates an intermediate key by running a fixed key and the <strong>session key</strong> through HMAC-SHA1, and then uses this to seed an RC4A cipher that encrypts the header.</p>
+<p>Wrath creates an intermediate key by running a fixed key and the <strong>session key</strong> through HMAC-SHA1, and then uses this to seed an ARC4 cipher that encrypts the header.</p>
 <p>The key generation function is essentially the same as the TBC generation, except TBC uses the same hardcoded seed for both client and server, while Wrath has separate keys.</p>
 <p>The seed keys are:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">// Used for Client (Encryption) to Server (Decryption)
@@ -2427,7 +2429,10 @@ Then apply the keystream to 1024 bytes (since this is the drop1024 variant).</p>
 </tr>
 </tbody>
 </table>
-<p>The following files can be used to verify utility methods that return a size and opcode.
+<p><a href="https://gtker.com/wow_messages/ir/implementing_world.html#message-layout">World Message</a> headers contain a 2 byte <strong>big endian</strong> size field and either a 4/5 (SMSG) or 6 (CMSG) byte opcode field.
+If, after decrypting, the top level bit is set for SMSG (that is <code>(top_byte &amp; 0x80) != 0</code>), the size field is 3 bytes instead of 2.
+This must also be set when sending messages larger than 0x7fff.
+The following files can be used to verify utility methods that return a size and opcode.
 The data should be decrypted first using the side in the file name, then encrypted again in order to verify that the write also matches.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>session_key <span style="color:#f92672">=</span> [
 </span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0x2E</span>, <span style="color:#ae81ff">0xFE</span>, <span style="color:#ae81ff">0xE7</span>, <span style="color:#ae81ff">0xB0</span>, <span style="color:#ae81ff">0xC1</span>, <span style="color:#ae81ff">0x77</span>, <span style="color:#ae81ff">0xEB</span>, <span style="color:#ae81ff">0xBD</span>, <span style="color:#ae81ff">0xFF</span>, <span style="color:#ae81ff">0x66</span>, <span style="color:#ae81ff">0x76</span>, <span style="color:#ae81ff">0xC5</span>, <span style="color:#ae81ff">0x6E</span>, <span style="color:#ae81ff">0xFC</span>, <span style="color:#ae81ff">0x23</span>,
@@ -2444,8 +2449,8 @@ The data should be decrypted first using the side in the file name, then encrypt
 <thead>
 <tr>
 <th>Data (8 bytes)</th>
-<th>Size</th>
-<th>Opcode</th>
+<th>Size (2 or 3 bytes <strong>big endian</strong>)</th>
+<th>Opcode (2 bytes <strong>little endian</strong>)</th>
 </tr>
 </thead>
 <tbody>
@@ -2463,8 +2468,8 @@ The data should be decrypted first using the side in the file name, then encrypt
 <thead>
 <tr>
 <th>Data (8 bytes)</th>
-<th>Size</th>
-<th>Opcode</th>
+<th>Size (2 bytes <strong>big endian</strong>)</th>
+<th>Opcode (4 bytes <strong>little endian</strong></th>
 </tr>
 </thead>
 <tbody>
